@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fa">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Css/bootstrap.min.css" />
+    <link rel="stylesheet" href="Css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="Css/bootstrap-Icon.min.css" />
+    <link rel="stylesheet" href="Css/newAnimate.css" />
+    <link rel="stylesheet" href="Css/Style.css" />
+    <link rel="shortcut icon" href="Image/favicon.ico" type="image/x-icon">
+    <title>آذرخش</title>
+</head>
+
+<body>
+
+
+
+
+    <div class="Navbar-class">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-5">
+                    <nav class="navbar navbar-expand-lg">
+                        <button class="navbar-toggler first-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="">
+                            <div class="animated-icon1"><span></span><span></span><span></span></div>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/">خانه</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">درباره ما</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">ارتباط با ما</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">محصولات</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">اخبار</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">بلاگ</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="col-md-3 col-4">
+                    <div class="SideNav">
+                        <ul class="sm-list wow fadeInDown d-none d-md-flex">
+                            <li><a href="#" target="_blank"><i class="bi bi-instagram"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="bi bi-telegram"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="bi bi-whatsapp"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="bi bi-twitter"></i></a></li>
+                        </ul>
+                        <div class="ChangeThemeBox">
+                            <div class="CustomColorPicker">
+                                <input type="color" id="firstColorInput">
+                                <input type="color" id="secondColorInput">
+                            </div>
+                            <button class="ChangeColorBtn" onclick="changeColor()">
+                                <span class="color01">.</span>
+                                <span class="color02">.</span>
+                            </button>
+                            <button class="ChangeColorBtn ChangeColorBtn01" onclick="changeColor01()">
+                                <span class="color01">.</span>
+                                <span class="color02">.</span>
+                            </button>
+                            <div id="ThemeBoxSwitch">
+                                <input type="checkbox" class="checkbox" id="ThemeBoxSwitchInput">
+                                <label class="label" for="ThemeBoxSwitchInput">
+                                    <i class="bi bi-moon"></i>
+                                    <i class="bi bi-sun"></i>
+                                    <div class="ball"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1 col-3">
+                    <div class="logo-header">
+                        <a href="/"><img src="Image/logo.png" alt="pic"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-12 wow fadeInUp" data-wow-delay=".3s">
+                    <div class="footer-box footer-address">
+                        <div class="logo-footer">
+                            <a href="/"><img src="Image/logo.png" alt="pic"></a>
+                        </div>
+                        <p>لورم ایپسوم <span>متن ساختگی</span> با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
+                            گرافیک است.
+                        </p>
+                        <ul class="sm-list">
+                            <li><a href="#" target="_blank"><i class="bi bi-instagram"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="bi bi-telegram"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="bi bi-whatsapp"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="bi bi-twitter"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-1 col-12"></div>
+                <div class="col-md-3 col-12 wow fadeInUp" data-wow-delay=".5s">
+                    <div class="footer-box footer-links">
+                        <h5><span>دسترسی </span> سریع</h5>
+                        <ul>
+                            <li><i class="bi bi-chevron-double-left"></i><a href="/">خانه</a></li>
+                            <li><i class="bi bi-chevron-double-left"></i><a href="#">درباره ما</a></li>
+                            <li><i class="bi bi-chevron-double-left"></i><a href="#">ارتباط با ما</a></li>
+                            <li><i class="bi bi-chevron-double-left"></i><a href="#">محصولات</a></li>
+                        </ul>
+                    </div>
+
+
+                </div>
+                <div class="col-md-4 col-12 wow fadeInUp" data-wow-delay=".7s">
+                    <div class="footer-box footer-contact">
+                        <h5><span>راه های </span>ارتباطی</h5>
+                        <ul>
+                            <li><i class="bi bi-geo-alt-fill"></i><a href="#">ادرس شرکت</a></li>
+                            <li><i class="bi bi-phone"></i><a href="tel:+982177123456">021-77123456</a></li>
+                            <li><i class="bi bi-telephone"></i><a href="tel:+982177123456">021-77123456</a></li>
+                            <li><i class="bi bi-envelope-at"></i><a
+                                    href="mailto:example@support.com">example@support.com</a></li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="copyright">
+                        <p>کپی رایت © 2025 برای آذرخش محفوظ است. طراحی شده توسط <a href="https://nextlancer.ir/"
+                                title="azaranweb" target="_blank">نکست لنسر</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+    
+
+
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/point.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/source.js"></script>
+
+</body>
+
+</html>
