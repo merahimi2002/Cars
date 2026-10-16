@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 
 <head>
     <meta charset="UTF-8" />
-    <meta http equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Css/bootstrap.min.css" />
     <link rel="stylesheet" href="Css/owl.carousel.min.css" />
@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="Css/Style.css" />
     <link rel="shortcut icon" href="Image/favicon.ico" type="image/x-icon">
     <title>آذرخش</title>
+    <script src="js/theme.js"></script>
 </head>
 
 <body>
@@ -32,7 +33,7 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav">
                                 <li class="nav-item active">
-                                    <a class="nav-link" href="/">خانه</a>
+                                    <a class="nav-link" href="./">خانه</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">درباره ما</a>
@@ -55,39 +56,52 @@
                 </div>
                 <div class="col-md-3 col-4">
                     <div class="SideNav">
-                        <ul class="sm-list wow fadeInDown d-none d-md-flex">
-                            <li><a href="#" target="_blank"><i class="bi bi-instagram"></i></a></li>
-                            <li><a href="#" target="_blank"><i class="bi bi-telegram"></i></a></li>
-                            <li><a href="#" target="_blank"><i class="bi bi-whatsapp"></i></a></li>
-                            <li><a href="#" target="_blank"><i class="bi bi-twitter"></i></a></li>
-                        </ul>
-                        <div class="ChangeThemeBox">
-                            <div class="CustomColorPicker">
-                                <input type="color" id="firstColorInput">
-                                <input type="color" id="secondColorInput">
+                        <details class="theme-picker">
+                            <summary class="theme-trigger" aria-label="تنظیمات ظاهر">
+                                <span class="theme-trigger-swatch" aria-hidden="true"></span>
+                                <span>ظاهر سایت</span>
+                                <i class="bi bi-chevron-down" aria-hidden="true"></i>
+                            </summary>
+                            <div class="theme-panel">
+                                <div class="theme-panel-heading">
+                                    <div><strong>ظاهر سایت</strong><p>به سلیقهٔ خودت تنظیم کن</p></div>
+                                    <i class="bi bi-palette" aria-hidden="true"></i>
+                                </div>
+                                <fieldset class="theme-section">
+                                    <legend>ترکیب رنگ</legend>
+                                    <div class="theme-presets">
+                                        <button class="theme-preset" type="button" data-theme="logo" aria-pressed="true">
+                                            <span class="theme-preview theme-preview-logo" aria-hidden="true"><span></span><i class="bi bi-check-lg"></i></span>
+                                            <strong>آذرخش</strong><small>مشکی و قرمز</small>
+                                        </button>
+                                        <button class="theme-preset" type="button" data-theme="ocean" aria-pressed="false">
+                                            <span class="theme-preview theme-preview-ocean" aria-hidden="true"><span></span><i class="bi bi-check-lg"></i></span>
+                                            <strong>اسپرت</strong><small>سرمه‌ای و مسی</small>
+                                        </button>
+                                    </div>
+                                </fieldset>
+                                <div class="theme-mode-row">
+                                    <label for="ThemeBoxSwitchInput"><strong>حالت تیره</strong><small>نمایش مناسب نور کم</small></label>
+                                    <div id="ThemeBoxSwitch">
+                                        <input type="checkbox" class="checkbox" id="ThemeBoxSwitchInput" aria-label="حالت تیره">
+                                        <label class="label" for="ThemeBoxSwitchInput"><i class="bi bi-moon" aria-hidden="true"></i><i class="bi bi-sun" aria-hidden="true"></i><span class="ball"></span></label>
+                                    </div>
+                                </div>
+                                <fieldset class="theme-section theme-custom">
+                                    <legend>رنگ دلخواه</legend>
+                                    <div class="theme-color-fields">
+                                        <label for="firstColorInput"><input type="color" id="firstColorInput" value="#18191d"><span>رنگ اصلی</span></label>
+                                        <label for="secondColorInput"><input type="color" id="secondColorInput" value="#ff1f2a"><span>رنگ تأکیدی</span></label>
+                                    </div>
+                                </fieldset>
+                                <div class="theme-panel-bottom"><span>تنظیمات خودکار ذخیره می‌شود</span><button type="button" id="themeReset">بازنشانی</button></div>
                             </div>
-                            <button class="ChangeColorBtn" onclick="changeColor()">
-                                <span class="color01">.</span>
-                                <span class="color02">.</span>
-                            </button>
-                            <button class="ChangeColorBtn ChangeColorBtn01" onclick="changeColor01()">
-                                <span class="color01">.</span>
-                                <span class="color02">.</span>
-                            </button>
-                            <div id="ThemeBoxSwitch">
-                                <input type="checkbox" class="checkbox" id="ThemeBoxSwitchInput">
-                                <label class="label" for="ThemeBoxSwitchInput">
-                                    <i class="bi bi-moon"></i>
-                                    <i class="bi bi-sun"></i>
-                                    <div class="ball"></div>
-                                </label>
-                            </div>
-                        </div>
+                        </details>
                     </div>
                 </div>
                 <div class="col-md-1 col-3">
                     <div class="logo-header">
-                        <a href="/"><img src="Image/logo.png" alt="pic"></a>
+                        <a href="./"><img src="Image/logo.png" alt="لوگوی آذرخش"></a>
                     </div>
                 </div>
             </div>
@@ -99,7 +113,7 @@
                 <div class="col-md-4 col-12 wow fadeInUp" data-wow-delay=".3s">
                     <div class="footer-box footer-address">
                         <div class="logo-footer">
-                            <a href="/"><img src="Image/logo.png" alt="pic"></a>
+                            <a href="./"><img src="Image/logo.png" alt="لوگوی آذرخش"></a>
                         </div>
                         <p>لورم ایپسوم <span>متن ساختگی</span> با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
                             گرافیک است.
@@ -117,7 +131,7 @@
                     <div class="footer-box footer-links">
                         <h5><span>دسترسی </span> سریع</h5>
                         <ul>
-                            <li><i class="bi bi-chevron-double-left"></i><a href="/">خانه</a></li>
+                            <li><i class="bi bi-chevron-double-left"></i><a href="./">خانه</a></li>
                             <li><i class="bi bi-chevron-double-left"></i><a href="#">درباره ما</a></li>
                             <li><i class="bi bi-chevron-double-left"></i><a href="#">ارتباط با ما</a></li>
                             <li><i class="bi bi-chevron-double-left"></i><a href="#">محصولات</a></li>
