@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Css/bootstrap.min.css" />
-    <link rel="stylesheet" href="Css/owl.carousel.min.css" />
     <link rel="stylesheet" href="Css/bootstrap-Icon.min.css" />
     <link rel="stylesheet" href="Css/newAnimate.css" />
     <link rel="stylesheet" href="Css/Style.css" />
+    <link rel="stylesheet" href="Css/showroom.css?v=13" />
     <link rel="shortcut icon" href="Image/favicon.ico" type="image/x-icon">
     <title>آذرخش</title>
     <script src="js/theme.js"></script>
@@ -17,17 +17,14 @@
 
 <body>
 
-
-
-
     <div class="Navbar-class">
         <div class="container">
             <div class="row">
-                <div class="col-md-8 col-5">
+                <div class="header-nav">
                     <nav class="navbar navbar-expand-lg">
                         <button class="navbar-toggler first-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="">
+                            aria-expanded="false" aria-label="باز کردن منو">
                             <div class="animated-icon1"><span></span><span></span><span></span></div>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -54,7 +51,7 @@
                         </div>
                     </nav>
                 </div>
-                <div class="col-md-3 col-4">
+                <div class="header-settings">
                     <div class="SideNav">
                         <details class="theme-picker">
                             <summary class="theme-trigger" aria-label="تنظیمات ظاهر">
@@ -99,7 +96,7 @@
                         </details>
                     </div>
                 </div>
-                <div class="col-md-1 col-3">
+                <div class="header-logo">
                     <div class="logo-header">
                         <a href="./"><img src="Image/logo.png" alt="لوگوی آذرخش"></a>
                     </div>
@@ -107,6 +104,76 @@
             </div>
         </div>
     </div>
+
+    <main>
+        <section class="showroom" id="showroom" aria-labelledby="showroom-title" style="margin:0">
+            <div class="showroom-sky" aria-hidden="true"></div>
+            <div class="showroom-grain" aria-hidden="true"></div>
+            <div class="showroom-car-picker" role="group" aria-label="انتخاب خودرو">
+                <button type="button" data-car="huracan" aria-pressed="true" disabled><span>01</span> لامبورگینی</button>
+                <button type="button" data-car="ferrari" aria-pressed="false" disabled><span>02</span> فراری 458</button>
+                <button type="button" data-car="bmw" aria-pressed="false" disabled><span>03</span> BMW M4</button>
+            </div>
+            <h1 class="showroom-title" id="showroom-title" lang="en">HURACÁN</h1>
+            <p class="showroom-subtitle">جسارت، از هر زاویه. <span>انتخاب بعدی با توست.</span></p>
+            <div class="showroom-stage">
+                <img class="showroom-poster" src="Image/cars/huracan-spyder.webp" alt="لامبورگینی هوراکان اسپایدر" fetchpriority="high">
+                <canvas class="showroom-canvas" tabindex="0" aria-label="نمای سه‌بعدی هوراکان؛ برای چرخش بکشید یا از کلیدهای جهت‌نما استفاده کنید"></canvas>
+            </div>
+            <div class="showroom-mobile-space" aria-hidden="true"></div>
+            <div class="showroom-loader" role="status">
+                <p id="showroom-loading-text">در حال آماده‌سازی شوروم</p>
+                <div class="showroom-progress" aria-hidden="true"><span></span></div>
+            </div>
+            <div class="showroom-error" role="status" hidden>
+                <p>نمای سه‌بعدی بارگذاری نشد. تصویر خودرو همچنان در دسترس است.</p>
+                <button class="showroom-action" id="showroom-retry" type="button">تلاش دوباره</button>
+            </div>
+            <div class="showroom-hint"><i class="bi bi-arrows-move" aria-hidden="true"></i><span id="showroom-hint-text">برای دیدن از هر زاویه، خودرو را بچرخان</span></div>
+            <div class="showroom-controls">
+                <div class="showroom-paint-control">
+                    <div class="showroom-paint-heading"><output id="paint-name" aria-live="polite">قرمز آتشین</output></div>
+                    <div class="showroom-paints" role="group" aria-label="انتخاب رنگ بدنه">
+                        <button class="paint-button" type="button" data-paint="#ed263c" data-paint-name="قرمز آتشین" style="--swatch:#ed263c" aria-label="قرمز آتشین" aria-pressed="true" disabled></button>
+                        <button class="paint-button" type="button" data-paint="#f7b928" data-paint-name="زرد خورشیدی" style="--swatch:#f7b928" aria-label="زرد خورشیدی" aria-pressed="false" disabled></button>
+                        <button class="paint-button" type="button" data-paint="#80ba35" data-paint-name="سبز لایم" style="--swatch:#80ba35" aria-label="سبز لایم" aria-pressed="false" disabled></button>
+                        <button class="paint-button" type="button" data-paint="#2388c7" data-paint-name="آبی اقیانوسی" style="--swatch:#2388c7" aria-label="آبی اقیانوسی" aria-pressed="false" disabled></button>
+                        <button class="paint-button" type="button" data-paint="#e3e5e8" data-paint-name="سفید مرواریدی" style="--swatch:#e3e5e8" aria-label="سفید مرواریدی" aria-pressed="false" disabled></button>
+                        <button class="paint-button" type="button" data-paint="#22252b" data-paint-name="مشکی گرافیتی" style="--swatch:#22252b" aria-label="مشکی گرافیتی" aria-pressed="false" disabled></button>
+                    </div>
+                </div>
+                <div class="showroom-angles">
+                    <span class="showroom-control-label">زاویهٔ نگاهت را انتخاب کن</span>
+                    <div class="showroom-views" role="group" aria-label="زاویهٔ دوربین">
+                        <button class="showroom-view" data-view="hero" aria-pressed="true" type="button" disabled>سه‌ربع</button>
+                        <button class="showroom-view" data-view="front" aria-pressed="false" type="button" disabled>جلو</button>
+                        <button class="showroom-view" data-view="side" aria-pressed="false" type="button" disabled>بغل</button>
+                        <button class="showroom-view" data-view="rear" aria-pressed="false" type="button" disabled>عقب</button>
+                        <button class="showroom-view" data-view="top" aria-pressed="false" type="button" disabled>بالا</button>
+                    </div>
+                </div>
+                <div class="showroom-actions">
+                    <button class="showroom-action" id="showroom-rotate" aria-label="چرخش خودکار خودرو" aria-pressed="false" type="button" disabled><i class="bi bi-arrow-repeat" aria-hidden="true"></i><span>چرخش خودکار</span><span class="visually-hidden">چرخش خودکار خودرو</span></button>
+                    <button class="showroom-action" id="showroom-replay" aria-label="پخش دوبارهٔ ورود خودرو" type="button" disabled><i class="bi bi-play-fill" aria-hidden="true"></i><span>ورود دوباره</span><span class="visually-hidden">پخش دوبارهٔ ورود خودرو</span></button>
+                </div>
+            </div>
+            <noscript><style>.showroom-loader{display:none}</style><p class="showroom-error">برای چرخاندن خودرو و تغییر رنگ، جاوااسکریپت مرورگر را فعال کنید.</p></noscript>
+        </section>
+        <section class="showroom-story" id="discover" aria-labelledby="story-title">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5">
+                        <span class="story-eyebrow">لامبورگینی هوراکان اسپایدر</span>
+                        <h2 id="story-title">فقط تماشایش نکن.<br>از نو کشفش کن.</h2>
+                        <p>خطوط جسور، فرم بی‌پروا و شخصیتی که با هر رنگ تغییر می‌کند. دور خودرو بچرخ، جزئیات را از نزدیک ببین و ترکیب دلخواهت را پیدا کن.</p>
+                        <a class="story-link" href="#showroom">بازگشت به تجربهٔ سه‌بعدی <i class="bi bi-arrow-up-left" aria-hidden="true"></i></a>
+                    </div>
+                    <div class="col-lg-6 offset-lg-1"><figure><img class="story-photo" src="Image/cars/huracan-spyder.webp" alt="نمای لامبورگینی هوراکان اسپایدر" loading="lazy" width="1600" height="900"><figcaption class="story-credit">عکس: <a href="https://commons.wikimedia.org/wiki/File:Lamborghini_Huracan_Evo_Spyder,_GIMS_2019,_Le_Grand-Saconnex_(GIMS0852).jpg" target="_blank" rel="noopener">Matti Blume</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> · نمونهٔ EVO</figcaption></figure></div>
+                </div>
+            </div>
+        </section>
+    <p class="showroom-asset-credit">مدل‌ها: <a href="https://github.com/LorenzoDoremi/Configuratore_Lambo">Huracán source</a> · <a href="https://sketchfab.com/models/57bf6cc56931426e87494f554df1dab6">Ferrari: vicent091036</a> · <a href="https://skfb.ly/oyM8P">BMW: SRT Performance</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0 (BMW)</a></p>
+    </main>
     <footer>
         <div class="container">
             <div class="row">
@@ -138,7 +205,6 @@
                         </ul>
                     </div>
 
-
                 </div>
                 <div class="col-md-4 col-12 wow fadeInUp" data-wow-delay=".7s">
                     <div class="footer-box footer-contact">
@@ -166,17 +232,10 @@
         </div>
     </footer>
 
-
-
-    
-
-
-
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/point.js"></script>
     <script src="js/wow.min.js"></script>
     <script src="js/source.js"></script>
+    <script src="js/showroom-boot.js?v=10"></script>
 
 </body>
 
