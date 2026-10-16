@@ -29,6 +29,14 @@ The generated `models/*.local.js` scripts contain Base64 copies of the same GLB 
 
 Three.js 0.169.0 and its GLTFLoader, OrbitControls, BufferGeometryUtils and RoomEnvironment modules are vendored in `../js/vendor/`. MIT license is included in `../js/vendor/THREE-LICENSE.txt`. Imports point to local files.
 
+## Paint palettes
+
+Factory colour names are used for each car's six selected presets. Hex values are approximate RGB previews, not manufacturer colour measurements; showroom lighting and screen calibration change their appearance. The custom colour picker is separate from the factory presets.
+
+- Lamborghini: manufacturer configurator colour catalogue, https://configurator.lamborghini.com/ (Rosso Mars, Giallo Inti, Verde Mantis, Arancio Borealis, Bianco Monocerus, Nero Noctis).
+- Ferrari: 458 Italia factory personalisation catalogue, https://axisofoversteer.com/blog/documents/458Italia.pdf ; Ferrari Approved inventory, https://preowned.ferrari.com/ .
+- BMW: original M4 Competition launch and paint choices, https://www.press.bmwgroup.com/united-kingdom/article/detail/T0316947EN_GB/the-new-bmw-m3-competition-saloon-and-bmw-m4-competition-coup%C3%A9 ; M4 colour brochure, https://www.bmw.in/content/dam/bmw/marketIN/bmw_in/brochure%20download/brochureupload/2022/PR73028_INR-CWW-BMW_NSC_M4CompetitionMxDriveBrochure_Jan22_1_6.pdf.asset.1644560380169.pdf .
+
 ## Design reference
 
 Horizon Hero Section by scott clayton: https://21st.dev/@lovesickfromthe6ix/components/horizon-hero-section . Used as visual direction; the showroom implementation is original and stays buildless HTML/CSS/JavaScript.

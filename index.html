@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="Css/bootstrap-Icon.min.css" />
     <link rel="stylesheet" href="Css/newAnimate.css" />
     <link rel="stylesheet" href="Css/Style.css" />
-    <link rel="stylesheet" href="Css/showroom.css?v=13" />
+    <link rel="stylesheet" href="Css/showroom.css?v=16" />
     <link rel="shortcut icon" href="Image/favicon.ico" type="image/x-icon">
     <title>آذرخش</title>
     <script src="js/theme.js"></script>
@@ -115,6 +115,11 @@
                 <button type="button" data-car="bmw" aria-pressed="false" disabled><span>03</span> BMW M4</button>
             </div>
             <h1 class="showroom-title" id="showroom-title" lang="en">HURACÁN</h1>
+            <div class="environment-picker" role="group" aria-label="انتخاب محیط رانندگی">
+                <button type="button" data-environment="desert" aria-label="بیابان" title="بیابان" aria-pressed="true" disabled><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 18c4-7 7-11 10-11 4 0 5 8 10 11M2 18h20M5 18c3-3 5-4 8-4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <button type="button" data-environment="city" aria-label="شهر" title="شهر" aria-pressed="false" disabled><i class="bi bi-buildings" aria-hidden="true"></i></button>
+                <button type="button" data-environment="coast" aria-label="ساحل" title="ساحل" aria-pressed="false" disabled><i class="bi bi-water" aria-hidden="true"></i></button>
+            </div>
             <p class="showroom-subtitle">جسارت، از هر زاویه. <span>انتخاب بعدی با توست.</span></p>
             <div class="showroom-stage">
                 <img class="showroom-poster" src="Image/cars/huracan-spyder.webp" alt="لامبورگینی هوراکان اسپایدر" fetchpriority="high">
@@ -132,14 +137,18 @@
             <div class="showroom-hint"><i class="bi bi-arrows-move" aria-hidden="true"></i><span id="showroom-hint-text">برای دیدن از هر زاویه، خودرو را بچرخان</span></div>
             <div class="showroom-controls">
                 <div class="showroom-paint-control">
-                    <div class="showroom-paint-heading"><output id="paint-name" aria-live="polite">قرمز آتشین</output></div>
+                    <div class="showroom-paint-heading"><output id="paint-name" aria-live="polite" dir="auto">Rosso Mars</output></div>
                     <div class="showroom-paints" role="group" aria-label="انتخاب رنگ بدنه">
-                        <button class="paint-button" type="button" data-paint="#ed263c" data-paint-name="قرمز آتشین" style="--swatch:#ed263c" aria-label="قرمز آتشین" aria-pressed="true" disabled></button>
-                        <button class="paint-button" type="button" data-paint="#f7b928" data-paint-name="زرد خورشیدی" style="--swatch:#f7b928" aria-label="زرد خورشیدی" aria-pressed="false" disabled></button>
-                        <button class="paint-button" type="button" data-paint="#80ba35" data-paint-name="سبز لایم" style="--swatch:#80ba35" aria-label="سبز لایم" aria-pressed="false" disabled></button>
-                        <button class="paint-button" type="button" data-paint="#2388c7" data-paint-name="آبی اقیانوسی" style="--swatch:#2388c7" aria-label="آبی اقیانوسی" aria-pressed="false" disabled></button>
-                        <button class="paint-button" type="button" data-paint="#e3e5e8" data-paint-name="سفید مرواریدی" style="--swatch:#e3e5e8" aria-label="سفید مرواریدی" aria-pressed="false" disabled></button>
-                        <button class="paint-button" type="button" data-paint="#22252b" data-paint-name="مشکی گرافیتی" style="--swatch:#22252b" aria-label="مشکی گرافیتی" aria-pressed="false" disabled></button>
+                        <button class="paint-button" type="button" data-paint="#c92332" data-paint-name="Rosso Mars" style="--swatch:#c92332" aria-label="Rosso Mars" title="Rosso Mars" aria-pressed="true" disabled></button>
+                        <button class="paint-button" type="button" data-paint="#eebc18" data-paint-name="Giallo Inti" style="--swatch:#eebc18" aria-label="Giallo Inti" title="Giallo Inti" aria-pressed="false" disabled></button>
+                        <button class="paint-button" type="button" data-paint="#69b52b" data-paint-name="Verde Mantis" style="--swatch:#69b52b" aria-label="Verde Mantis" title="Verde Mantis" aria-pressed="false" disabled></button>
+                        <button class="paint-button" type="button" data-paint="#ed701e" data-paint-name="Arancio Borealis" style="--swatch:#ed701e" aria-label="Arancio Borealis" title="Arancio Borealis" aria-pressed="false" disabled></button>
+                        <button class="paint-button" type="button" data-paint="#eeeade" data-paint-name="Bianco Monocerus" style="--swatch:#eeeade" aria-label="Bianco Monocerus" title="Bianco Monocerus" aria-pressed="false" disabled></button>
+                        <button class="paint-button" type="button" data-paint="#151719" data-paint-name="Nero Noctis" style="--swatch:#151719" aria-label="Nero Noctis" title="Nero Noctis" aria-pressed="false" disabled></button>
+                        <label class="custom-paint" title="رنگ دلخواه بدنه">
+                            <i class="bi bi-palette" aria-hidden="true"></i>
+                            <input type="color" id="showroom-custom-paint" value="#c92332" aria-label="رنگ دلخواه بدنه" disabled>
+                        </label>
                     </div>
                 </div>
                 <div class="showroom-angles">
@@ -235,7 +244,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/wow.min.js"></script>
     <script src="js/source.js"></script>
-    <script src="js/showroom-boot.js?v=10"></script>
+    <script src="js/showroom-boot.js?v=16"></script>
 
 </body>
 

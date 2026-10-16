@@ -1,5 +1,7 @@
 import { rigWheels } from './wheel-rig.js';
 import { createLandscape } from './landscape.js';
+import { paintPalettes } from './paint-palettes.js';
+import { transitionEnvironment } from './environment-transition.js';
 
 const hero = document.getElementById('showroom');
 const canvas = hero.querySelector('canvas');
@@ -8,11 +10,14 @@ const loadingText = document.getElementById('showroom-loading-text');
 const errorPanel = hero.querySelector('.showroom-error');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const paintButtons = [...hero.querySelectorAll('[data-paint]')];
+const customPaint = document.getElementById('showroom-custom-paint');
+const environmentButtons = [...hero.querySelectorAll('[data-environment]')];
+let currentEnvironment = 'desert';
 const viewButtons = [...hero.querySelectorAll('[data-view]')];
 const rotateButton = document.getElementById('showroom-rotate');
 const replayButton = document.getElementById('showroom-replay');
 const carButtons = [...hero.querySelectorAll('[data-car]')];
-const interactiveButtons = [...paintButtons, ...viewButtons, rotateButton, replayButton, ...carButtons];
+const interactiveButtons = [...paintButtons, customPaint, ...viewButtons, rotateButton, replayButton, ...carButtons, ...environmentButtons];
 const cars = {
     huracan: { file: 'huracan.glb', title: 'HURACÁN', label: '01 — HURACÁN SPYDER', name: 'لامبورگینی هوراکان اسپایدر', rotation: Math.PI / 2 },
     ferrari: { file: 'ferrari-458.glb', title: '458 ITALIA', label: '02 — FERRARI 458 ITALIA', name: 'فراری 458 ایتالیا', rotation: Math.PI },
@@ -278,7 +283,7 @@ async function initShowroom() {
         if (hero.clientWidth <= 575) {
             const space = hero.querySelector('.showroom-mobile-space');
             return Math.max(10.8 * canvas.clientHeight / hero.clientWidth,
-                5 * canvas.clientHeight / Math.max(space.clientHeight, 100));
+                5 * canvas.clientHeight / Math.max(space.clientHeight, 60));
         }
         const base = canvas.clientWidth / canvas.clientHeight < 1.15
             ? Math.max(11.8, 10.8 * canvas.clientHeight / hero.clientWidth)
@@ -411,6 +416,8 @@ async function initShowroom() {
             car.clear();
             car.add(nextModel);
             currentCar = id;
+            refreshPaintPalette();
+            paint.color.copy(paintTarget);
             hero.dataset.car = id;
             hero.dataset.wheelCount = String(nextModel.userData.wheels.length);
             document.getElementById('showroom-title').textContent = cars[id].title;
@@ -431,13 +438,33 @@ async function initShowroom() {
     }
     carButtons.forEach(button => button.addEventListener('click', () => switchCar(button.dataset.car)));
 
-    paintButtons.forEach(button => button.addEventListener('click', () => {
-        paintTarget.set(button.dataset.paint);
-        hero.style.setProperty('--paint', button.dataset.paint);
-        paintButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-        document.getElementById('paint-name').textContent = button.dataset.paintName;
+    const paintSelections = new Map();
+    function selectPaint(color, name, index = null) {
+        paintTarget.set(color);
+        hero.style.setProperty('--paint', color);
+        paintButtons.forEach((item, i) => item.setAttribute('aria-pressed', String(i === index)));
+        document.getElementById('paint-name').textContent = name;
+        customPaint.value = color;
+        customPaint.parentElement.classList.toggle('is-selected', index === null);
+        paintSelections.set(currentCar, { color, name, index });
         wake();
-    }));
+    }
+    function refreshPaintPalette() {
+        const palette = paintPalettes[currentCar];
+        paintButtons.forEach((button, i) => {
+            const [name, color] = palette[i];
+            button.dataset.paint = color;
+            button.dataset.paintName = name;
+            button.style.setProperty('--swatch', color);
+            button.setAttribute('aria-label', name);
+            button.title = name;
+        });
+        const saved = paintSelections.get(currentCar);
+        if (saved) selectPaint(saved.color, saved.name, saved.index);
+        else selectPaint(palette[0][1], palette[0][0], 0);
+    }
+    paintButtons.forEach((button, index) => button.addEventListener('click', () => selectPaint(button.dataset.paint, button.dataset.paintName, index)));
+    customPaint.addEventListener('input', () => selectPaint(customPaint.value, 'رنگ دلخواه'));
     viewButtons.forEach(button => button.addEventListener('click', () => selectView(button.dataset.view)));
     rotateButton.addEventListener('click', () => {
         autoRotate = !autoRotate;
@@ -503,15 +530,37 @@ async function initShowroom() {
     // Available for local asset QA and exported poster rendering.
     function syncSceneTheme() {
         const dark = document.documentElement.dataset.mode === 'dark';
+        const environments = {
+            desert: { fog: dark ? 0x283640 : 0xb4c0b9, light: 0xffe9e0, rim: 0xa8c9ff, fill: 0xffc2b5 },
+            city: { fog: dark ? 0x1b293c : 0xa6bac7, light: 0xe3edff, rim: 0x81afff, fill: 0xe2deef },
+            coast: { fog: dark ? 0x253d4d : 0xb8d6d7, light: 0xffeed2, rim: 0x90deef, fill: 0xffd8ad }
+        };
+        const environment = environments[currentEnvironment];
+        scene.fog.density = currentEnvironment === 'desert' ? .022 : .013;
+        landscape.setMode(currentEnvironment);
         landscape.setTheme(dark);
-        scene.fog.color.set(dark ? 0x283640 : 0xb4c0b9);
+        scene.fog.color.set(environment.fog);
+        key.color.set(environment.light);
+        rim.color.set(environment.rim);
+        fill.color.set(environment.fill);
         roadMaterial.color.set(dark ? 0x747e89 : 0xc1c8ce);
         laneMaterial.color.set(dark ? 0xc5ced1 : 0xe9e5d8);
         shadow.material.opacity = dark ? .35 : .2;
         wake();
     }
+    environmentButtons.forEach(button => button.addEventListener('click', () => {
+        if (currentEnvironment === button.dataset.environment) return;
+        transitionEnvironment(hero, renderer, scene, camera, () => {
+            currentEnvironment = button.dataset.environment;
+            hero.dataset.environment = currentEnvironment;
+            environmentButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+            syncSceneTheme();
+        }, reducedMotion.matches);
+    }));
     new MutationObserver(syncSceneTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-mode'] });
     syncSceneTheme();
+    refreshPaintPalette();
+    paint.color.copy(paintTarget);
     hero.dataset.model = 'loaded';
     hero.dataset.car = currentCar;
     hero.dataset.wheelCount = String(car.children[0].userData.wheels.length);

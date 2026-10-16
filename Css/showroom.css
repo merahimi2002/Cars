@@ -19,9 +19,9 @@
 }
 
 .theme-panel {
-    background: rgba(var(--white-custome), .82);
-    backdrop-filter: blur(28px) saturate(150%);
-    -webkit-backdrop-filter: blur(28px) saturate(150%);
+    background: rgba(var(--white-custome), .95);
+    backdrop-filter: blur(48px) saturate(125%);
+    -webkit-backdrop-filter: blur(48px) saturate(125%);
 }
 
 .Navbar-class .nav-link { font-size: var(--type-nav); }
@@ -472,6 +472,13 @@ html:not([data-mode="dark"]) .showroom-controls {
     align-items: center;
 }
 
+.custom-paint { position: relative; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 28px; width: 28px; height: 28px; margin: 0; border: 1px solid currentColor; border-radius: 50%; color: #e8e6ec; background: #ffffff12; cursor: pointer; }
+.custom-paint > .bi { display: inline-flex; line-height: 1; font-size: 16px; }
+.custom-paint input { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; opacity: 0; cursor: pointer; }
+.custom-paint:has(input:disabled) { opacity: .35; cursor: wait; }
+.custom-paint:focus-within, .custom-paint.is-selected { outline: 1px solid currentColor; outline-offset: 3px; }
+html:not([data-mode="dark"]) .custom-paint { color: #252834; }
+
 .paint-button {
     border: 0;
     padding: 0;
@@ -895,6 +902,39 @@ html:not([data-mode="dark"]) .showroom-controls {
     .showroom { grid-template-rows: auto 0 auto minmax(100px, 1fr) auto auto; }
     .showroom-title { font-size: clamp(2rem, 9vw, 2.75rem); }
     .showroom-controls { gap: 8px; padding: 10px; }
+}
+
+.environment-picker {
+    position: absolute; left: 3%; top: 43%; z-index: 6;
+    display: grid; gap: 5px; padding: 6px; width: 58px;
+    border-radius: 18px; border: 1px solid #ffffff55;
+    background: #eff4f6a6; color: #273846;
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    box-shadow: inset 0 1px #ffffff50, 0 10px 30px #14283815;
+}
+.environment-picker button { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 6px; border: 0; border-radius: 12px; color: inherit; background: transparent; cursor: pointer; font-size: var(--type-ui); white-space: nowrap; transition: background .2s, color .2s; }
+.environment-picker .bi { display: inline-flex; line-height: 1; font-size: 17px; }
+.environment-picker .bi::before { display: block; }
+.environment-picker button { min-height: 42px; }
+.environment-frame { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; pointer-events: none; }
+.environment-sky-frame { z-index: -2; pointer-events: none; }
+.environment-picker button:hover { background: #ffffff50; }
+.environment-picker button[aria-pressed="true"] { background: #253d4c; color: #fff; }
+html[data-mode="dark"] .environment-picker { background: #172737c9; color: #dce5eb; border-color: #ffffff26; }
+html[data-mode="dark"] .environment-picker button[aria-pressed="true"] { background: #d9e7ec; color: #1e3040; }
+.showroom[data-environment="city"] .showroom-sky { background: radial-gradient(ellipse at 50% 46%, #cad7dc, #829bad 50%, #304d6d 100%); }
+.showroom[data-environment="coast"] .showroom-sky { background: radial-gradient(ellipse at 50% 48%, #f3dfb9, #9acbd9 44%, #39789d 100%); }
+.showroom[data-environment="city"] .showroom-sky::after { background: linear-gradient(transparent, #a6bac7 48%, var(--showroom-floor)); }
+.showroom[data-environment="coast"] .showroom-sky::after { background: linear-gradient(transparent, #b8d6d7 48%, var(--showroom-floor)); }
+
+@media (max-width: 575px) {
+    .showroom { grid-template-rows: auto auto auto minmax(80px, 1fr) auto auto; }
+    .showroom-subtitle { display: none; }
+    .environment-picker { grid-row: 2; position: relative; inset: auto; width: 100%; grid-template-columns: repeat(3, 1fr); padding: 3px; gap: 3px; border-radius: 24px; }
+    .environment-picker button { padding: 6px; min-height: 30px; border-radius: 20px; font-size: var(--type-small); }
+    .environment-picker .bi { font-size: 14px; }
+    .showroom-mobile-space { min-height: 80px; }
 }
 
 .showroom-story h2 { font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem); }

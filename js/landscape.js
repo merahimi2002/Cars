@@ -1,4 +1,6 @@
 // Local procedural roadside scenery; no remote textures or model requests.
+import { createEnvironment } from './environments.js';
+
 export function createLandscape(THREE, scene, renderer) {
     let seed = 1847;
     const random = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
@@ -104,12 +106,29 @@ export function createLandscape(THREE, scene, renderer) {
         shrubs.setMatrixAt(i, dummy.matrix);
     }
     scene.add(stones, shrubs);
+    const environments = new Map();
+    let active = 'desert', isDark = false;
     return {
         ground,
+        setMode(id) {
+            active = id;
+            ground.visible = stones.visible = shrubs.visible = id === 'desert';
+            if (id !== 'desert' && !environments.has(id)) {
+                const environment = createEnvironment(THREE, id);
+                environments.set(id, environment);
+                scene.add(environment.group);
+            }
+            environments.forEach((environment, key) => {
+                environment.group.visible = active === key;
+                environment.setTheme(isDark);
+            });
+        },
         setTheme(dark) {
+            isDark = dark;
             material.color.set(dark ? 0x687782 : 0xffffff);
             stoneMaterial.color.set(dark ? 0x66717a : 0xb7aa91);
             shrubMaterial.color.set(dark ? 0x71827b : 0xffffff);
+            environments.forEach(environment => environment.setTheme(dark));
         }
     };
 }
