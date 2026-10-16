@@ -592,3 +592,7 @@ html[data-mode="dark"] {
     .Navbar-class { position: relative; }
     .theme-trigger { gap: 6px; padding: 9px; font-size: 11px; }
 }
+
+.theme-preview-emerald { --preview-base: #123b33; --preview-accent: #af7d2c; }
+.theme-preview-amethyst { --preview-base: #2d2145; --preview-accent: #9d7bdd; }
+.theme-panel { max-height: calc(100svh - var(--navbar-height, 92px) - 24px); overflow-y: auto; overscroll-behavior: contain; }

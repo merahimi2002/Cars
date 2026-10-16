@@ -126,6 +126,8 @@ canvas.drive-canvas, .showroom.is-handoff .showroom-canvas {
     .drive-word { top: 24%; font-size: clamp(2.2rem, 11vw, 4rem); }
     .drive-canvas { top: 30px; height: calc(100% - 85px); }
     .drive-edge-blur { top: 30px; height: calc(100% - 85px); }
+    /* Paint caption and navigation above the edge-only backdrop filter. */
+    .drive-view-label, .drive-jumps, .drive-progress { z-index: 2; }
     .drive-view-label { bottom: 60px; font-size: clamp(.68rem, 2.5vw, .8125rem); }
     .drive-callout { top: calc(50% - 12px); }
     .drive-callout::after { left: auto; right: 0; }

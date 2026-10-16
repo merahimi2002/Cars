@@ -1,6 +1,6 @@
 (() => {
     const root = document.documentElement;
-    const palettes = { logo: ['#18191d', '#ff1f2a'], ocean: ['#142638', '#ff963f'] };
+    const palettes = { logo: ['#18191d', '#ff1f2a'], ocean: ['#142638', '#ff963f'], emerald: ['#123b33', '#af7d2c'], amethyst: ['#2d2145', '#9d7bdd'] };
     let state = { palette: 'logo', mode: 'light', colors: palettes.logo.slice() };
     try {
         const saved = JSON.parse(localStorage.getItem('cars-theme'));
