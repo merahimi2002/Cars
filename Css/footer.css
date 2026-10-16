@@ -5,8 +5,8 @@
 }
 
 .site-footer {
-    --footer-ink: #23303a;
-    --footer-muted: #64717a;
+    --footer-ink: #000000;
+    --footer-muted: #000000;
     --footer-line: #22313c21;
     position: relative;
     isolation: isolate;
@@ -18,8 +18,8 @@
     transition: --footer-paint .8s ease;
 }
 html[data-mode="dark"] .site-footer {
-    --footer-ink: #e9edf0;
-    --footer-muted: #9ba7b1;
+    --footer-ink: #ffffff;
+    --footer-muted: #ffffff;
     --footer-line: #e4edf122;
 }
 .site-footer::before {
