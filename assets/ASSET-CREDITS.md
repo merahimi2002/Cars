@@ -22,12 +22,19 @@ The generated `models/*.local.js` scripts contain Base64 copies of the same GLB 
 
 - `../Image/cars/huracan-spyder.webp`: Matti Blume, *Lamborghini Huracan Evo Spyder, GIMS 2019, Le Grand-Saconnex (GIMS0852)*.
   Source: https://commons.wikimedia.org/wiki/File:Lamborghini_Huracan_Evo_Spyder,_GIMS_2019,_Le_Grand-Saconnex_(GIMS0852).jpg
-  License: CC BY-SA 4.0, https://creativecommons.org/licenses/by-sa/4.0/ . Resized to 1600 px and converted to WebP; the resulting image retains the same license. Visible attribution is in the page caption.
+  License: CC BY-SA 4.0, https://creativecommons.org/licenses/by-sa/4.0/ . Resized to 1600 px and converted to WebP; the resulting image retains the same license. Visible attribution is in the page asset credits.
 - These reference photographs show the EVO Spyder; the interactive model is an earlier Huracán Spyder.
 
 ## Renderer
 
 Three.js 0.169.0 and its GLTFLoader, OrbitControls, BufferGeometryUtils and RoomEnvironment modules are vendored in `../js/vendor/`. MIT license is included in `../js/vendor/THREE-LICENSE.txt`. Imports point to local files.
+
+## Scroll story specifications
+
+- Huracán LP 610-4 Spyder: 610 metric hp, 0–100 km/h in 3.4 s, top speed 324 km/h. Manufacturer: https://preowned.lamborghini.com/models/huracan-spyder .
+- Ferrari 458 Italia: 570 CV, 0–100 km/h in under 3.4 s, top speed 325 km/h. Manufacturer: https://www.ferrari.com/en-GQ/history/moments/2009/benchmark-car/more and https://cdn.ferrari.com/cms/network/media/pdf/12_prospectus_ferrari_n_v_eu_20160103.pdf .
+- BMW M4 Competition G82, original rear-wheel-drive specification: 510 PS, 0–100 km/h in 3.9 s, electronically limited 250 km/h (155 mph). Manufacturer: https://www.press.bmwgroup.com/united-kingdom/article/detail/T0316947EN_GB/the-new-bmw-m3-competition-saloon-and-bmw-m4-competition-coup%C3%A9 .
+- The story reuses the active local 3D model and its paint; it downloads no additional vehicle assets. Descriptions concern visible design details. The specific variant is shown beside the figures.
 
 ## Paint palettes
 

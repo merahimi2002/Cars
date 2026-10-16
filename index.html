@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="Css/bootstrap-Icon.min.css" />
     <link rel="stylesheet" href="Css/newAnimate.css" />
     <link rel="stylesheet" href="Css/Style.css" />
-    <link rel="stylesheet" href="Css/showroom.css?v=16" />
+    <link rel="stylesheet" href="Css/showroom.css?v=19" />
+    <link rel="stylesheet" href="Css/drive-story.css?v=14" />
     <link rel="shortcut icon" href="Image/favicon.ico" type="image/x-icon">
     <title>آذرخش</title>
     <script src="js/theme.js"></script>
@@ -168,20 +169,64 @@
             </div>
             <noscript><style>.showroom-loader{display:none}</style><p class="showroom-error">برای چرخاندن خودرو و تغییر رنگ، جاوااسکریپت مرورگر را فعال کنید.</p></noscript>
         </section>
-        <section class="showroom-story" id="discover" aria-labelledby="story-title">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-5">
-                        <span class="story-eyebrow">لامبورگینی هوراکان اسپایدر</span>
-                        <h2 id="story-title">فقط تماشایش نکن.<br>از نو کشفش کن.</h2>
-                        <p>خطوط جسور، فرم بی‌پروا و شخصیتی که با هر رنگ تغییر می‌کند. دور خودرو بچرخ، جزئیات را از نزدیک ببین و ترکیب دلخواهت را پیدا کن.</p>
-                        <a class="story-link" href="#showroom">بازگشت به تجربهٔ سه‌بعدی <i class="bi bi-arrow-up-left" aria-hidden="true"></i></a>
-                    </div>
-                    <div class="col-lg-6 offset-lg-1"><figure><img class="story-photo" src="Image/cars/huracan-spyder.webp" alt="نمای لامبورگینی هوراکان اسپایدر" loading="lazy" width="1600" height="900"><figcaption class="story-credit">عکس: <a href="https://commons.wikimedia.org/wiki/File:Lamborghini_Huracan_Evo_Spyder,_GIMS_2019,_Le_Grand-Saconnex_(GIMS0852).jpg" target="_blank" rel="noopener">Matti Blume</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> · نمونهٔ EVO</figcaption></figure></div>
+        <section class="drive-story" id="discover" aria-labelledby="drive-title">
+            <header class="drive-header">
+                <h2 id="drive-title">از ظاهر،<br><span>تا هیجان رانندگی.</span></h2>
+                <p>با اسکرول، جزئیات <span data-drive-name>خودروی انتخابی تو</span> را کشف کن.</p>
+            </header>
+            <div class="drive-layout">
+                <div class="drive-visual">
+                    <div class="drive-visual-heading"><span data-drive-edition dir="ltr">LP 610-4 SPYDER</span></div>
+                    <div class="drive-word" data-drive-word aria-hidden="true">HURACÁN</div>
+                    <canvas class="drive-canvas" role="img" aria-label="جزئیات سه‌بعدی خودروی انتخابی"></canvas>
+                    <div class="drive-callout" aria-hidden="true"><span class="drive-callout-dot"></span><span class="drive-callout-text" data-drive-callout>رینگ و لاستیک</span></div>
+                    <div class="drive-view-label"><span class="drive-view-dot"></span><span data-drive-detail>نمای کلی</span></div>
+                    <p class="drive-fallback" role="status">نمای جزئیات در دسترس نیست؛ مشخصات خودرو را پایین ببین.</p>
+                    <nav class="drive-jumps" aria-label="بخش‌های جزئیات خودرو">
+                        <a href="#drive-step-0" data-drive-jump="0" aria-current="step"><span>01</span>عملکرد</a>
+                        <a href="#drive-step-1" data-drive-jump="1"><span>02</span>رینگ</a>
+                        <a href="#drive-step-2" data-drive-jump="2"><span>03</span>چراغ</a>
+                        <a href="#drive-step-3" data-drive-jump="3"><span>04</span>کابین</a>
+                        <a href="#drive-step-4" data-drive-jump="4"><span>05</span>انتخاب تو</a>
+                    </nav>
+                    <div class="drive-progress" aria-hidden="true"><span></span></div>
+                </div>
+                <div class="drive-narrative">
+                    <article class="drive-step is-active" id="drive-step-0">
+                        <h3>فراتر از<br>یک ظاهر زیبا.</h3>
+                        <p data-drive-lead>قدرت، شتاب و طراحی در کنار هم.</p>
+                        <span class="drive-engine" data-drive-engine dir="ltr">V10 · 5.2 L</span>
+                        <dl class="drive-stats">
+                            <div><dt>قدرت موتور</dt><dd><strong data-drive-stat>۶۱۰</strong><span>اسب‌بخار متریک</span></dd></div>
+                            <div><dt>صفر تا صد</dt><dd><strong data-drive-stat>۳٫۴</strong><span>ثانیه</span></dd></div>
+                            <div><dt>حداکثر سرعت</dt><dd><strong data-drive-stat>۳۲۴</strong><span>کیلومتر بر ساعت</span></dd></div>
+                        </dl>
+                        <small data-drive-note>مشخصات نسخهٔ انتخاب‌شده</small>
+                    </article>
+                    <article class="drive-step" id="drive-step-1">
+                        <h3>قدرت،<br>روی چهار چرخ.</h3>
+                        <p data-drive-wheel>فرم رینگ و نسبت آن با گلگیر را از نزدیک ببین.</p>
+                        <span class="drive-detail-rule" aria-hidden="true"></span>
+                    </article>
+                    <article class="drive-step" id="drive-step-2">
+                        <h3>نگاهی که<br>شناخته می‌شود.</h3>
+                        <p data-drive-lights>جزئیات چراغ و خطوط جلو، شخصیت خودرو را می‌سازند.</p>
+                        <span class="drive-detail-rule" aria-hidden="true"></span>
+                    </article>
+                    <article class="drive-step" id="drive-step-3">
+                        <h3>همه‌چیز،<br>دور تو می‌چرخد.</h3>
+                        <p data-drive-cabin>خطوط سقف و فضای راننده را از زاویه‌ای تازه ببین.</p>
+                        <span class="drive-detail-rule" aria-hidden="true"></span>
+                    </article>
+                    <article class="drive-step drive-finale" id="drive-step-4">
+                        <h3>حالا،<br>بیشتر بشناسش.</h3>
+                        <p data-drive-name>لامبورگینی هوراکان اسپایدر</p>
+                        <a class="drive-back" href="#showroom">تغییر خودرو یا رنگ <i class="bi bi-arrow-up" aria-hidden="true"></i></a>
+                    </article>
                 </div>
             </div>
         </section>
-    <p class="showroom-asset-credit">مدل‌ها: <a href="https://github.com/LorenzoDoremi/Configuratore_Lambo">Huracán source</a> · <a href="https://sketchfab.com/models/57bf6cc56931426e87494f554df1dab6">Ferrari: vicent091036</a> · <a href="https://skfb.ly/oyM8P">BMW: SRT Performance</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0 (BMW)</a></p>
+    <p class="showroom-asset-credit">مدل‌ها: <span>Huracán source</span> · <span>Ferrari: vicent091036</span> · <span>BMW: SRT Performance</span> · <span>CC BY 4.0 (BMW)</span> · عکس پشتیبان: <span>Matti Blume</span> · <span>CC BY-SA 4.0</span></p>
     </main>
     <footer>
         <div class="container">
@@ -232,8 +277,7 @@
             <div class="row">
                 <div class="col-12 text-center">
                     <div class="copyright">
-                        <p>کپی رایت © 2025 برای آذرخش محفوظ است. طراحی شده توسط <a href="https://nextlancer.ir/"
-                                title="azaranweb" target="_blank">نکست لنسر</a>
+                        <p>کپی رایت © 2025 برای آذرخش محفوظ است. طراحی شده توسط <span>نکست لنسر</span>
                         </p>
                     </div>
                 </div>
@@ -244,7 +288,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/wow.min.js"></script>
     <script src="js/source.js"></script>
-    <script src="js/showroom-boot.js?v=16"></script>
+    <script src="js/showroom-boot.js?v=28"></script>
 
 </body>
 

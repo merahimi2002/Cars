@@ -12,6 +12,6 @@
         script.onerror = failed;
         document.body.appendChild(script);
     } else {
-        import('./showroom.js?v=16').catch(failed);
+        import('./showroom.js?v=28').catch(failed);
     }
 })();

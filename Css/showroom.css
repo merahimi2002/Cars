@@ -199,9 +199,13 @@ html:not([data-mode="dark"]) .showroom :is(button, a):focus-visible {
     z-index: 2;
     text-align: center;
     margin: 0;
-    font: 900 clamp(3.5rem, 10.2vw, 10.5rem)/.95 Arial, sans-serif;
+    font: 900 clamp(3rem, 7.8vw, 8rem)/1.05 Arial, sans-serif;
     letter-spacing: -.075em;
     color: rgb(var(--second-color));
+    background-image: linear-gradient(110deg, rgb(var(--second-color)) 18%, color-mix(in srgb, rgb(var(--second-color)) 65%, #fff) 55%, rgb(var(--second-color)) 86%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     direction: ltr;
     pointer-events: none;
     mask-image: linear-gradient(#000 65%, transparent 100%);
@@ -615,74 +619,6 @@ html:not([data-mode="dark"]) .custom-paint { color: #252834; }
 
 
 
-.showroom-story {
-    margin: 0;
-    padding: 85px 0;
-    background: rgb(var(--white-custome));
-}
-
-.showroom-story .row {
-    align-items: center;
-    row-gap: 32px;
-}
-
-.story-eyebrow {
-    color: rgb(var(--second-color));
-    font-size: var(--type-ui);
-    display: block;
-    margin-bottom: 16px;
-}
-
-.showroom-story h2 {
-    font-weight: 900;
-    line-height: 1.7;
-    margin-bottom: 15px;
-}
-
-.showroom-story p {
-    max-width: 440px;
-    color: rgba(var(--black-custome), .65);
-    font-size: var(--type-body);
-    line-height: 2.2;
-}
-
-.story-photo {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-    border-radius: 2px;
-}
-
-.story-credit {
-    font-size: var(--type-small);
-    margin-top: 9px;
-    opacity: .65;
-}
-
-.story-credit a {
-    font-size: inherit;
-    text-decoration: underline;
-}
-
-.story-link {
-    margin-top: 16px;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(var(--black-custome), .3);
-    color: rgb(var(--black-custome));
-    font-size: var(--type-ui);
-}
-
-.story-link:hover {
-    color: rgb(var(--second-color));
-}
-
-.showroom-story+footer {
-    margin-top: 0;
-}
-
 @keyframes showroom-title-in {
     to {
         opacity: 1;
@@ -830,9 +766,6 @@ html:not([data-mode="dark"]) .custom-paint { color: #252834; }
         font-size: var(--type-small);
     }
 
-    .showroom-story {
-        padding: 50px 0;
-    }
 }
 
 @media (max-width: 991px) {
@@ -882,7 +815,7 @@ html:not([data-mode="dark"]) .custom-paint { color: #252834; }
     .showroom-subtitle { grid-row: 2; text-align: center; font-size: var(--type-small); }
     .showroom-car-picker { grid-row: 1; }
     .showroom-car-picker button { padding: 9px 5px; }
-    .showroom-title { grid-row: 3; font-size: clamp(2.5rem, 10.2vw, 3.7rem); }
+    .showroom-title { grid-row: 3; font-size: clamp(2.1rem, 8.6vw, 3rem); }
     .showroom-stage { inset: 0; mask-image: linear-gradient(transparent, #000 28%, #000 88%, transparent); }
     .showroom-mobile-space { display: block; grid-row: 4; min-height: 100px; pointer-events: none; }
     .showroom-hint { grid-row: 5; justify-self: center; width: fit-content; max-width: 100%; padding: 7px 30px; white-space: normal; }
@@ -900,7 +833,7 @@ html:not([data-mode="dark"]) .custom-paint { color: #252834; }
     .showroom { padding-top: 80px; gap: 5px; }
     .showroom-subtitle { display: none; }
     .showroom { grid-template-rows: auto 0 auto minmax(100px, 1fr) auto auto; }
-    .showroom-title { font-size: clamp(2rem, 9vw, 2.75rem); }
+    .showroom-title { font-size: clamp(1.85rem, 8vw, 2.5rem); }
     .showroom-controls { gap: 8px; padding: 10px; }
 }
 
@@ -936,9 +869,6 @@ html[data-mode="dark"] .environment-picker button[aria-pressed="true"] { backgro
     .environment-picker .bi { font-size: 14px; }
     .showroom-mobile-space { min-height: 80px; }
 }
-
-.showroom-story h2 { font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem); }
-.showroom-story p { font-size: var(--type-body); }
 
 @media (prefers-reduced-motion: reduce) {
     .showroom-title {

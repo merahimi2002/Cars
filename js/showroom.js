@@ -2,6 +2,7 @@ import { rigWheels } from './wheel-rig.js';
 import { createLandscape } from './landscape.js';
 import { paintPalettes } from './paint-palettes.js';
 import { transitionEnvironment } from './environment-transition.js';
+import { createDriveStory } from './drive-story.js';
 
 const hero = document.getElementById('showroom');
 const canvas = hero.querySelector('canvas');
@@ -191,6 +192,7 @@ async function initShowroom() {
     }
     loader.setDRACOLoader(draco);
     const modelCache = new Map();
+    let driveStory = null;
     let currentCar = 'huracan';
     let switching = false;
     async function loadModel(id) {
@@ -264,6 +266,7 @@ async function initShowroom() {
     let activeView = 'hero';
     let autoRotate = false;
     let intro = null;
+    let transferPausedAt = null;
     let cameraTween = null;
     let visible = true;
     let frame = null;
@@ -363,7 +366,7 @@ async function initShowroom() {
     }
     function tick(now) {
         frame = null;
-        if (!visible || document.hidden) return;
+        if (!visible || document.hidden || transferPausedAt !== null) return;
         rendering = true;
         const delta = Math.min((now - previousTime) / 1000, .05);
         previousTime = now;
@@ -418,6 +421,7 @@ async function initShowroom() {
             currentCar = id;
             refreshPaintPalette();
             paint.color.copy(paintTarget);
+            driveStory?.setModel(id, nextModel);
             hero.dataset.car = id;
             hero.dataset.wheelCount = String(nextModel.userData.wheels.length);
             document.getElementById('showroom-title').textContent = cars[id].title;
@@ -446,6 +450,7 @@ async function initShowroom() {
         document.getElementById('paint-name').textContent = name;
         customPaint.value = color;
         customPaint.parentElement.classList.toggle('is-selected', index === null);
+        document.getElementById('discover').style.setProperty('--drive-paint', color);
         paintSelections.set(currentCar, { color, name, index });
         wake();
     }
@@ -514,12 +519,16 @@ async function initShowroom() {
     new IntersectionObserver(entries => {
         visible = entries[0].isIntersecting;
         if (visible) {
-            if (intro) intro.start = performance.now();
+            if (intro && transferPausedAt === null) intro.start = performance.now();
             wake();
+        } else {
+            // Finish the hero paint blend before the shared model appears in the story.
+            paint.color.copy(paintTarget);
+            driveStory?.wake();
         }
     }, { rootMargin: '100px' }).observe(hero);
     document.addEventListener('visibilitychange', () => {
-        if (!document.hidden) { if (intro) intro.start = performance.now(); wake(); }
+        if (!document.hidden) { if (intro && transferPausedAt === null) intro.start = performance.now(); wake(); }
     });
     canvas.addEventListener('webglcontextlost', event => {
         event.preventDefault();
@@ -561,6 +570,27 @@ async function initShowroom() {
     syncSceneTheme();
     refreshPaintPalette();
     paint.color.copy(paintTarget);
+    driveStory = createDriveStory(THREE, RoomEnvironment, {
+        hero, canvas,
+        capture: () => {
+            camera.updateMatrixWorld(true);
+            const anchor = new THREE.Vector3(0, .65, 0).add(car.position).project(camera);
+            return { eye: camera.position.clone(), aim: controls.target.clone(), translation: car.position.clone(), anchorY: (1 - anchor.y) * .5 };
+        },
+        setTransitioning: leaving => {
+            if (leaving && transferPausedAt === null) {
+                transferPausedAt = performance.now(); controls.enabled = false;
+            } else if (!leaving && transferPausedAt !== null) {
+                const pause = performance.now() - transferPausedAt;
+                if (intro) intro.start += pause;
+                if (cameraTween) cameraTween.start += pause;
+                transferPausedAt = null;
+                controls.enabled = !intro && !cameraTween;
+                wake();
+            }
+        }
+    });
+    driveStory.setModel(currentCar, car.children[0]);
     hero.dataset.model = 'loaded';
     hero.dataset.car = currentCar;
     hero.dataset.wheelCount = String(car.children[0].userData.wheels.length);
