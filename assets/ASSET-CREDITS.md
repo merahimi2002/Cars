@@ -22,7 +22,7 @@ The generated `models/*.local.js` scripts contain Base64 copies of the same GLB 
 
 - `../Image/cars/huracan-spyder.webp`: Matti Blume, *Lamborghini Huracan Evo Spyder, GIMS 2019, Le Grand-Saconnex (GIMS0852)*.
   Source: https://commons.wikimedia.org/wiki/File:Lamborghini_Huracan_Evo_Spyder,_GIMS_2019,_Le_Grand-Saconnex_(GIMS0852).jpg
-  License: CC BY-SA 4.0, https://creativecommons.org/licenses/by-sa/4.0/ . Resized to 1600 px and converted to WebP; the resulting image retains the same license. Visible attribution is in the page asset credits.
+  License: CC BY-SA 4.0, https://creativecommons.org/licenses/by-sa/4.0/ . Resized to 1600 px and converted to WebP; the resulting image retains the same license. Attribution and source links are retained in this document.
 - These reference photographs show the EVO Spyder; the interactive model is an earlier Huracán Spyder.
 
 ## Renderer
@@ -47,3 +47,22 @@ Factory colour names are used for each car's six selected presets. Hex values ar
 ## Design reference
 
 Horizon Hero Section by scott clayton: https://21st.dev/@lovesickfromthe6ix/components/horizon-hero-section . Used as visual direction; the showroom implementation is original and stays buildless HTML/CSS/JavaScript.
+
+## Footer architectural background
+- File: `footer-pavilion.webp` (local optimized WebP, 194 KB).
+- Created with the built-in imagegen tool for this project.
+- Prompt: Photorealistic luxury automotive editorial background plate, no cars, no people, no text or logos. Wide landscape 16:9. Empty modern architectural pavilion on a coastal cliff, warm grey textured concrete, pale limestone floor with realistic subtle reflections, large curved architectural wall framing distant misty mountains and ocean, overcast blue hour soft natural light, charcoal and silver neutral palette. Eye-level low automotive photography camera, spacious empty foreground center for compositing a sports car. Sophisticated quiet premium atmosphere, realistic photography rather than illustration. Fine tactile material detail, restrained atmospheric haze.
+
+## Footer automotive studio background
+- File: `footer-garage.webp` (local WebP).
+- Generated with the built-in imagegen tool; no car, person, logo or text is present in the image.
+- Prompt: Photorealistic automotive advertising background plate, empty premium car photography studio inside a modern motorsport garage. Absolutely no vehicles, cars, wheels, people, text, signage or logos. Wide 16:9 composition. Low automotive camera at 0.8 metres, level horizon, 50mm lens. Large empty flat charcoal concrete floor occupying lower 60 percent of frame, fine realistic matte concrete texture and subtle soft reflections. Upper 40 percent: dark graphite garage walls, long soft white strip lights, frosted glass partitions, architectural beams and silver blue ambient illumination. Central floor empty for compositing a sports car; realistic automotive photography, neutral lighting for light and dark overlays.
+
+## Exhibition parking footer background
+- File: `footer-exhibition-parking.webp`.
+- Built-in imagegen; empty exhibition parking hall with one central marked parking bay, no vehicles, people, logos or text.
+- Prompt: Photorealistic luxury automotive exhibition parking hall background plate. Wide 16:9, symmetrical modern exhibition garage, polished matte grey concrete floor occupying lower 65%. One clearly defined large empty central foreground parking bay with white painted lines in perspective, rear edge at y48%, foreground edge at y90%. Adjacent empty bays, pillars, graphite wall panels, soft linear white ceiling lighting, frosted windows, neutral silver-blue light. Low camera at about 1m looking slightly down, flat floor and restrained reflections, suitable for compositing an animated sports car in front three-quarter view. No cars, people, text, logos, podium, plants, racing flags, neon or signs.
+
+## User-selected footer parking background
+- Original: `Image/Twilight Luxury Parking Deck.png`, supplied by the user.
+- Website version: `assets/footer-twilight-parking.webp`, optimized WebP; original preserved.

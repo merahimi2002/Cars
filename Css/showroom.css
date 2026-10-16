@@ -1,4 +1,5 @@
 :root {
+    --navbar-height: 73px;
     --type-small: clamp(.75rem, .71rem + .18vw, .875rem);
     --type-ui: clamp(.8125rem, .77rem + .2vw, .9375rem);
     --type-body: clamp(.875rem, .82rem + .25vw, 1rem);
@@ -7,15 +8,19 @@
 
 /* Horizon-inspired automotive showroom. */
 .Navbar-class {
-    position: absolute;
+    position: fixed;
     inset: 0 0 auto;
     --surface-text: 255, 255, 255;
     z-index: 20;
     background: linear-gradient(120deg, rgba(27, 48, 65, .22), rgba(27, 48, 65, .1));
-    backdrop-filter: blur(24px) saturate(145%);
-    -webkit-backdrop-filter: blur(24px) saturate(145%);
+    backdrop-filter: blur(48px) saturate(145%);
+    -webkit-backdrop-filter: blur(48px) saturate(145%);
     border-bottom: 1px solid rgba(var(--surface-text), .15);
     box-shadow: inset 0 1px rgba(var(--surface-text), .12), 0 8px 32px #10182012;
+}
+.Navbar-class.is-scrolled {
+    --surface-text: var(--black-custome);
+    border-bottom-color: rgba(var(--surface-text), .12);
 }
 
 .theme-panel {
@@ -43,18 +48,6 @@
 .theme-trigger > .bi, .showroom-action > .bi, .showroom-hint > .bi { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; line-height: 1; }
 .theme-trigger > .bi::before, .showroom-action > .bi::before, .showroom-hint > .bi::before { display: block; line-height: 1; }
 
-footer {
-    --surface-color: var(--white-custome);
-    --surface-text: var(--black-custome);
-}
-
-footer .copyright {
-    border-top-color: rgba(var(--black-custome), .12);
-}
-
-footer :is(p, a, li, .copyright) { font-size: var(--type-ui); }
-footer li { display: flex; align-items: center; gap: 8px; }
-footer li > .bi { display: inline-flex; align-items: center; flex: 0 0 auto; line-height: 1; padding-left: 0; }
 #ThemeBoxSwitch .label i { display: inline-flex; align-items: center; margin-top: 0; line-height: 1; }
 
 .showroom [hidden] {
@@ -264,19 +257,6 @@ html:not([data-mode="dark"]) .showroom :is(button, a):focus-visible {
     padding: 15px;
     border-radius: 8px;
     background: #10121cda;
-}
-
-.showroom-asset-credit {
-    text-align: center;
-    padding: 16px;
-    margin: 0;
-    font-size: var(--type-small);
-    opacity: .65;
-}
-
-.showroom-asset-credit a {
-    font-size: inherit;
-    text-decoration: underline;
 }
 
 .showroom-subtitle {
@@ -772,6 +752,7 @@ html:not([data-mode="dark"]) .custom-paint { color: #252834; }
     .header-nav { flex: 1; }
     .Navbar-class .first-button { padding: 10px; }
     .Navbar-class .navbar-collapse { position: absolute; inset: 100% 0 auto; padding: 10px 5%; background: #233749ed; backdrop-filter: blur(24px); }
+    .Navbar-class.is-scrolled .navbar-collapse { --surface-text: 255, 255, 255; }
     .Navbar-class .navbar-nav { padding-top: 0; }
     .showroom-actions { align-self: flex-end; }
 }

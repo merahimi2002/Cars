@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Css/bootstrap.min.css" />
     <link rel="stylesheet" href="Css/bootstrap-Icon.min.css" />
-    <link rel="stylesheet" href="Css/newAnimate.css" />
-    <link rel="stylesheet" href="Css/Style.css" />
-    <link rel="stylesheet" href="Css/showroom.css?v=19" />
-    <link rel="stylesheet" href="Css/drive-story.css?v=14" />
+    <link rel="stylesheet" href="Css/Style.css?v=2" />
+    <link rel="stylesheet" href="Css/showroom.css?v=23" />
+    <link rel="stylesheet" href="Css/drive-story.css?v=16" />
+    <link rel="stylesheet" href="Css/footer.css?v=9" />
     <link rel="shortcut icon" href="Image/favicon.ico" type="image/x-icon">
     <title>آذرخش</title>
     <script src="js/theme.js"></script>
@@ -22,7 +22,7 @@
         <div class="container">
             <div class="row">
                 <div class="header-nav">
-                    <nav class="navbar navbar-expand-lg">
+                    <nav class="navbar navbar-expand-lg" aria-label="منوی اصلی">
                         <button class="navbar-toggler first-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="باز کردن منو">
@@ -31,22 +31,19 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav">
                                 <li class="nav-item active">
-                                    <a class="nav-link" href="./">خانه</a>
+                                    <a class="nav-link" href="#showroom" aria-current="location">شوروم</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">درباره ما</a>
+                                    <a class="nav-link" href="#drive-step-0">مشخصات فنی</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">ارتباط با ما</a>
+                                    <a class="nav-link" href="#drive-step-1">جزئیات طراحی</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">محصولات</a>
+                                    <a class="nav-link" href="#drive-step-3">کابین</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">اخبار</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">بلاگ</a>
+                                    <a class="nav-link" href="#contact">آذرخش</a>
                                 </li>
                             </ul>
                         </div>
@@ -226,69 +223,46 @@
                 </div>
             </div>
         </section>
-    <p class="showroom-asset-credit">مدل‌ها: <span>Huracán source</span> · <span>Ferrari: vicent091036</span> · <span>BMW: SRT Performance</span> · <span>CC BY 4.0 (BMW)</span> · عکس پشتیبان: <span>Matti Blume</span> · <span>CC BY-SA 4.0</span></p>
     </main>
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 col-12 wow fadeInUp" data-wow-delay=".3s">
-                    <div class="footer-box footer-address">
-                        <div class="logo-footer">
-                            <a href="./"><img src="Image/logo.png" alt="لوگوی آذرخش"></a>
-                        </div>
-                        <p>لورم ایپسوم <span>متن ساختگی</span> با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
-                            گرافیک است.
-                        </p>
-                        <ul class="sm-list">
-                            <li><a href="#" target="_blank"><i class="bi bi-instagram"></i></a></li>
-                            <li><a href="#" target="_blank"><i class="bi bi-telegram"></i></a></li>
-                            <li><a href="#" target="_blank"><i class="bi bi-whatsapp"></i></a></li>
-                            <li><a href="#" target="_blank"><i class="bi bi-twitter"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-1 col-12"></div>
-                <div class="col-md-3 col-12 wow fadeInUp" data-wow-delay=".5s">
-                    <div class="footer-box footer-links">
-                        <h5><span>دسترسی </span> سریع</h5>
-                        <ul>
-                            <li><i class="bi bi-chevron-double-left"></i><a href="./">خانه</a></li>
-                            <li><i class="bi bi-chevron-double-left"></i><a href="#">درباره ما</a></li>
-                            <li><i class="bi bi-chevron-double-left"></i><a href="#">ارتباط با ما</a></li>
-                            <li><i class="bi bi-chevron-double-left"></i><a href="#">محصولات</a></li>
-                        </ul>
-                    </div>
-
-                </div>
-                <div class="col-md-4 col-12 wow fadeInUp" data-wow-delay=".7s">
-                    <div class="footer-box footer-contact">
-                        <h5><span>راه های </span>ارتباطی</h5>
-                        <ul>
-                            <li><i class="bi bi-geo-alt-fill"></i><a href="#">ادرس شرکت</a></li>
-                            <li><i class="bi bi-phone"></i><a href="tel:+982177123456">021-77123456</a></li>
-                            <li><i class="bi bi-telephone"></i><a href="tel:+982177123456">021-77123456</a></li>
-                            <li><i class="bi bi-envelope-at"></i><a
-                                    href="mailto:example@support.com">example@support.com</a></li>
-                        </ul>
-
+    <footer class="site-footer" id="contact" aria-labelledby="footer-title">
+        <div class="footer-showcase" aria-hidden="true"><div class="footer-horizon"></div><div class="footer-car-slot"></div></div>
+        <div class="footer-shell">
+            <div class="footer-invitation" data-footer-reveal>
+                <h2 id="footer-title">انتخاب بعدی،<br><span>با توست.</span></h2>
+                <div class="footer-action">
+                    <p>یک خودرو، یک رنگ، یک نگاه تازه.<br>تجربهٔ بعدی‌ات را خودت بساز.</p>
+                    <a class="footer-return" href="#showroom"><span>برگشت به شوروم</span><i class="bi bi-arrow-up" aria-hidden="true"></i></a>
+                    <div class="footer-selection" aria-label="انتخاب فعلی شما">
+                        <span class="footer-selected-car"><span class="footer-paint-dot" aria-hidden="true"></span><span data-footer-car>لامبورگینی هوراکان اسپایدر</span></span>
+                        <span class="footer-selected-paint" data-footer-paint dir="auto">Rosso Mars</span>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12 text-center">
-                    <div class="copyright">
-                        <p>کپی رایت © 2025 برای آذرخش محفوظ است. طراحی شده توسط <span>نکست لنسر</span>
-                        </p>
-                    </div>
+            <div class="footer-details" data-footer-reveal>
+                <div class="footer-brand">
+                    <a class="footer-logo" href="#showroom" aria-label="آذرخش، برگشت به شوروم"><img src="Image/logo.png" alt="" width="72" height="72" loading="lazy"><span>آذرخش</span></a>
+                    <p>تجربهٔ خودرو از نگاهی دیگر؛<br>از رنگ بدنه تا جزئیاتی که تفاوت می‌سازند.</p>
                 </div>
+                <nav class="footer-links" aria-label="کاوش در آذرخش">
+                    <h3>مسیر تو</h3>
+                    <ul>
+                        <li><a href="#showroom">شوروم</a></li>
+                        <li><a href="#drive-step-0">مشخصات فنی</a></li>
+                        <li><a href="#drive-step-1">جزئیات طراحی</a></li>
+                        <li><a href="#drive-step-3">کابین</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="footer-bottom" data-footer-reveal>
+                <small>کپی رایت © <span data-footer-year>2026</span> برای آذرخش محفوظ است. طراحی شده توسط <a class="footer-designer" href="https://nextlancer.ir/" target="_blank" rel="noopener noreferrer" dir="ltr">Next Lancer</a></small>
+                <span>از هر زاویه، انتخابی تازه.</span>
             </div>
         </div>
     </footer>
 
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/wow.min.js"></script>
-    <script src="js/source.js"></script>
-    <script src="js/showroom-boot.js?v=28"></script>
+    <script src="js/source.js?v=5"></script>
+    <script src="js/showroom-boot.js?v=34"></script>
 
 </body>
 

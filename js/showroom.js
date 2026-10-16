@@ -451,6 +451,12 @@ async function initShowroom() {
         customPaint.value = color;
         customPaint.parentElement.classList.toggle('is-selected', index === null);
         document.getElementById('discover').style.setProperty('--drive-paint', color);
+        const footer = document.querySelector('.site-footer');
+        if (footer) {
+            footer.style.setProperty('--footer-paint', color);
+            footer.querySelector('[data-footer-car]').textContent = cars[currentCar].name;
+            footer.querySelector('[data-footer-paint]').textContent = name;
+        }
         paintSelections.set(currentCar, { color, name, index });
         wake();
     }

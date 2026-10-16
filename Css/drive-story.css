@@ -50,7 +50,7 @@ html[data-mode="dark"] .drive-story {
     .drive-header p { max-width: 35vw; }
 }
 .drive-layout { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.4fr); gap: 3%; padding-inline: 6% 0; align-items: start; }
-.drive-visual { grid-column: 2; grid-row: 1; position: sticky; top: 0; height: 100svh; min-height: 500px; isolation: isolate; background: var(--drive-texture), radial-gradient(ellipse at 50% 55%, color-mix(in srgb, var(--drive-paint, #ed263c) 7%, transparent), transparent 66%), var(--drive-bg); }
+.drive-visual { grid-column: 2; grid-row: 1; position: sticky; top: var(--navbar-height); height: calc(100svh - var(--navbar-height)); min-height: min(500px, calc(100svh - var(--navbar-height))); isolation: isolate; background: var(--drive-texture), radial-gradient(ellipse at 50% 55%, color-mix(in srgb, var(--drive-paint, #ed263c) 7%, transparent), transparent 66%), var(--drive-bg); }
 .drive-visual-heading { position: absolute; z-index: 2; inset: 35px 8% auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; direction: ltr; font: var(--type-small)/1.5 Consolas, monospace; color: var(--drive-muted); letter-spacing: .08em; }
 [data-drive-edition] {
     display: inline-block; font-weight: 600; color: var(--drive-ink);
@@ -97,7 +97,8 @@ canvas.drive-canvas, .showroom.is-handoff .showroom-canvas {
 .drive-progress { position: absolute; height: 3px; border-radius: 99px; overflow: hidden; background: var(--drive-line); left: 8%; right: 8%; bottom: 22px; direction: ltr; }
 .drive-progress span { display: block; width: 100%; height: 100%; background: rgb(var(--second-color)); transform: scaleX(var(--drive-progress, 0)); transform-origin: left; }
 .drive-narrative { grid-column: 1; grid-row: 1; min-width: 0; }
-.drive-step { min-height: 86svh; padding: 85px 0; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; opacity: .45; transform: translateY(18px); transition: opacity .65s, transform .65s; scroll-margin-top: 30px; }
+.drive-step { min-height: 86svh; padding: 85px 0; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; opacity: .45; transform: translateY(18px); transition: opacity .65s, transform .65s; scroll-margin-top: var(--navbar-height); }
+#contact, #discover { scroll-margin-top: calc(var(--navbar-height) + 20px); }
 .drive-step.is-active { opacity: 1; transform: none; }
 .drive-step h3 { font-size: clamp(1.5rem, 2.25vw, 2.5rem); line-height: 1.75; font-weight: 900; margin: 0 0 18px; }
 .drive-step p { max-width: 420px; margin-bottom: 25px; }
@@ -120,7 +121,7 @@ canvas.drive-canvas, .showroom.is-handoff .showroom-canvas {
     .drive-header { padding: 40px 0 28px; }
     .drive-header h2 { font-size: clamp(1.55rem, 5.6vw, 2.05rem); }
     .drive-layout { display: block; padding: 0; }
-    .drive-visual { top: 0; height: 43svh; min-height: 225px; max-height: 360px; z-index: 3; border-bottom: 1px solid var(--drive-line); box-shadow: 0 15px 22px var(--drive-bg); }
+    .drive-visual { height: 43svh; min-height: 225px; max-height: 360px; z-index: 3; border-bottom: 1px solid var(--drive-line); box-shadow: 0 15px 22px var(--drive-bg); }
     .drive-visual-heading { inset: 16px 7% auto; font-size: clamp(.62rem, 2.3vw, .75rem); }
     .drive-word { top: 24%; font-size: clamp(2.2rem, 11vw, 4rem); }
     .drive-canvas { top: 30px; height: calc(100% - 85px); }
@@ -134,7 +135,7 @@ canvas.drive-canvas, .showroom.is-handoff .showroom-canvas {
     .drive-jumps a span { display: none; }
     .drive-progress { bottom: 8px; }
     .drive-narrative { padding: 0 7%; }
-    .drive-step { min-height: 62svh; padding: 45px 0; opacity: .7; transform: none; border-bottom: 1px solid var(--drive-line); scroll-margin-top: 44svh; }
+    .drive-step { min-height: 62svh; padding: 45px 0; opacity: .7; transform: none; border-bottom: 1px solid var(--drive-line); scroll-margin-top: calc(var(--navbar-height) + 44svh); }
     .drive-step h3 { font-size: clamp(1.4rem, 5.1vw, 1.85rem); line-height: 1.75; }
     .drive-step p { margin-bottom: 18px; }
     .drive-stats { gap: 12px; padding-block: 20px; }

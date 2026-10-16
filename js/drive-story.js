@@ -4,6 +4,9 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
     const section = document.getElementById('discover');
     const visual = section.querySelector('.drive-visual');
     const canvas = section.querySelector('canvas');
+    const footer = document.querySelector('.site-footer');
+    const footerSlot = footer?.querySelector('.footer-car-slot');
+    let footerTravel = 0, displayedFooterTravel = 0;
     const steps = [...section.querySelectorAll('.drive-step')];
     const jumps = [...section.querySelectorAll('[data-drive-jump]')];
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -78,6 +81,7 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
         wheelCopies = (latest.source.userData.wheels || []).map(wheel => ({
             pivot: clonedNodes.get(wheel.pivot), radius: wheel.radius, source: wheel.pivot, base: wheel.pivot.rotation.x
         })).filter(wheel => wheel.pivot);
+        model.traverse(node => { if (node.isMesh) node.castShadow = true; });
         scene.add(model);
         const hub = latest.source.userData.wheels?.find(wheel => wheel.center.x > 0 && wheel.center.z > 0)?.center;
         const wheel = hub ? hub.clone() : new THREE.Vector3(1.05, .45, 1.5);
@@ -95,6 +99,9 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
         try {
             renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'low-power' });
             renderer.setPixelRatio(Math.min(devicePixelRatio, mobile.matches ? 1.25 : 1.5));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.VSMShadowMap;
+            renderer.shadowMap.autoUpdate = false;
             renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1;
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(34, 1, .1, 70);
@@ -103,13 +110,23 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
             room.dispose(); generator.dispose();
             scene.add(new THREE.HemisphereLight(0xe5edff, 0x303847, 2));
             const key = new THREE.DirectionalLight(0xfff0df, 3); key.position.set(4, 7, 5);
-            const rim = new THREE.DirectionalLight(0xa9cced, 2); rim.position.set(-4, 4, -3); scene.add(key, rim);
+            const rim = new THREE.DirectionalLight(0xa9cced, 2); rim.position.set(-4, 4, -3); key.castShadow = true;
+            key.shadow.mapSize.set(1024, 1024);
+            Object.assign(key.shadow.camera, { left: -6, right: 6, top: 7, bottom: -7, near: .5, far: 24 });
+            key.shadow.bias = -.0002; key.shadow.normalBias = .025;
+            key.shadow.radius = 5; key.shadow.blurSamples = 8;
+            scene.add(key, rim);
+            // A transparent receiver anchors every model to the photographed floor.
+            // Its projection follows the very same camera as the body and wheels.
+            const ground = new THREE.Mesh(new THREE.PlaneGeometry(28, 28), new THREE.ShadowMaterial({ opacity: .26, depthWrite: false }));
+            ground.rotation.x = -Math.PI / 2; ground.position.y = -.025;
+            ground.receiveShadow = true; scene.add(ground);
             const shadowCanvas = document.createElement('canvas'); shadowCanvas.width = shadowCanvas.height = 128;
             const context = shadowCanvas.getContext('2d'), gradient = context.createRadialGradient(64, 64, 5, 64, 64, 64);
-            gradient.addColorStop(0, '#00000065'); gradient.addColorStop(.5, '#00000035'); gradient.addColorStop(1, '#00000000');
+            gradient.addColorStop(0, '#000000b0'); gradient.addColorStop(.3, '#00000078'); gradient.addColorStop(.65, '#00000028'); gradient.addColorStop(1, '#00000000');
             context.fillStyle = gradient; context.fillRect(0, 0, 128, 128);
             const shadow = new THREE.Mesh(new THREE.PlaneGeometry(4.5, 8), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(shadowCanvas), transparent: true, depthWrite: false }));
-            shadow.rotation.x = -Math.PI / 2; shadow.position.y = -.03; scene.add(shadow);
+            shadow.rotation.x = -Math.PI / 2; shadow.position.y = -.015; scene.add(shadow);
             installModel(); resize(); section.classList.add('drive-ready');
         } catch (error) {
             console.error('Detail view unavailable:', error);
@@ -124,19 +141,24 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
             const source = heroView.canvas.getBoundingClientRect();
             const target = anchor.getBoundingClientRect();
             const layout = section.querySelector('.drive-layout').getBoundingClientRect();
+            const pinnedTop = parseFloat(getComputedStyle(visual).top) || 0;
             const start = heroRect.top + scrollY;
-            const end = layout.top + scrollY;
+            const end = layout.top + scrollY - pinnedTop;
             travelStart = start; travelEnd = end;
             const nextHandoff = clamp((scrollY - start) / Math.max(1, end - start), 0, 1);
             if (Math.abs(nextHandoff - handoff) > .0001) returning = nextHandoff < handoff;
             handoff = nextHandoff;
             startRect = { left: source.left, top: source.top - heroRect.top, width: source.width, height: source.height };
-            endRect = { left: target.left, top: target.top - visual.getBoundingClientRect().top, width: target.width, height: target.height };
+            endRect = { left: target.left, top: target.top - visual.getBoundingClientRect().top + pinnedTop, width: target.width, height: target.height };
             if (handoff === 0 && displayedHandoff === 0) heroFrame = null;
             else if (!heroFrame) {
                 heroFrame = heroView.capture();
                 wheelCopies.forEach(wheel => { wheel.base = wheel.source.rotation.x; });
             }
+        }
+        if (footerSlot) {
+            const footerTop = footer.getBoundingClientRect().top;
+            footerTravel = clamp((innerHeight - footerTop) / (innerHeight * .8), 0, 1);
         }
         entry = clamp((innerHeight - visual.getBoundingClientRect().top) / innerHeight, 0, 1);
         const focus = innerHeight * (mobile.matches ? .73 : .55);
@@ -198,6 +220,8 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
         displayedEntry += (entry - displayedEntry) * damping;
         displayedHandoff += (handoff - displayedHandoff) * damping;
         displayedApproach += (approach - displayedApproach) * damping;
+        displayedFooterTravel += (footerTravel - displayedFooterTravel) * damping;
+        if (Math.abs(footerTravel - displayedFooterTravel) < .0001) displayedFooterTravel = footerTravel;
         if (Math.abs(handoff - displayedHandoff) < .0001) displayedHandoff = handoff;
         if (displayedHandoff === 0) heroFrame = null;
         syncHeroUi();
@@ -243,6 +267,10 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
             camera.position.sub(look).multiplyScalar(fit).add(look);
             camera.lookAt(look); camera.updateMatrixWorld(true); camera.updateProjectionMatrix();
             const endAnchor = new THREE.Vector3(0, .65, 0).project(camera);
+            const footerActive = !!footerSlot && displayedFooterTravel > .0001 && displayedHandoff >= .999;
+            if (!footerActive && travelling && canvas.parentElement === footer) document.body.append(canvas, edgeBlur);
+            canvas.classList.toggle('is-footer-background', footerActive);
+            edgeBlur.classList.toggle('is-footer-background', footerActive);
             const transferring = heroFrame && displayedHandoff > 0 && displayedHandoff < 1 && !reduced.matches;
             if (transferring) {
                 const blend = arrival(displayedHandoff);
@@ -274,21 +302,55 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
                 edgeBlur.style.opacity = String(opacity * ease(clamp((displayedHandoff - .065) / .045, 0, 1)));
                 heroView.canvas.style.opacity = String(1 - opacity);
             } else {
-                dockCanvas();
+                if (displayedFooterTravel === 0) dockCanvas();
                 model.position.copy(latest.source.position);
                 if (heroView) heroView.canvas.style.opacity = reduced.matches || handoff === 0 ? '' : '0';
-                if (endRect) renderer.setSize(Math.round(endRect.width), Math.round(endRect.height), false);
+                if (endRect && displayedFooterTravel === 0) renderer.setSize(Math.round(endRect.width), Math.round(endRect.height), false);
             }
             // Distance / radius gives axle rotation. Absolute scroll progress
             // makes reverse scrolling retrace the wheels without accumulated drift.
             wheelCopies.forEach(wheel => {
                 const distance = (mobile.matches ? 2.8 : 5.8) + (heroFrame?.translation.length() || 0);
-                wheel.pivot.rotation.x = wheel.base + (reduced.matches ? 0 : distance * arrival(displayedHandoff) / wheel.radius);
+                wheel.pivot.rotation.x = wheel.base + (reduced.matches ? 0 : (distance * arrival(displayedHandoff) + 4 * ease(displayedFooterTravel)) / wheel.radius);
             });
+            if (footerSlot && displayedFooterTravel > 0 && displayedHandoff >= .999) {
+                const blend = reduced.matches ? 1 : ease(displayedFooterTravel);
+                const from = anchor.getBoundingClientRect(), to = footerSlot.getBoundingClientRect();
+                if (!travelling) {
+                    document.body.append(canvas, edgeBlur);
+                    canvas.classList.add('drive-canvas-travelling'); edgeBlur.classList.add('is-travelling'); travelling = true;
+                }
+                const rect = {};
+                for (const key of ['left', 'top', 'width', 'height']) {
+                    rect[key] = THREE.MathUtils.lerp(from[key], to[key], blend);
+                    canvas.style[key] = edgeBlur.style[key] = rect[key] + 'px';
+                }
+                // Keep the live render inside the footer stacking context, beneath its glass.
+                if (canvas.parentElement !== footer) footer.append(canvas, edgeBlur);
+                canvas.style.opacity = '1'; edgeBlur.style.opacity = '1';
+                renderer.setSize(Math.max(1, Math.round(rect.width)), Math.max(1, Math.round(rect.height)), false);
+                camera.aspect = rect.width / rect.height;
+                const footerLook = new THREE.Vector3(0, .65, 0);
+                const footerEye = new THREE.Vector3(-5.8, 1.9, 5.3);
+                footerEye.sub(footerLook).multiplyScalar(Math.max(1, 1.15 / camera.aspect) * (mobile.matches ? 1.2 : 1)).add(footerLook);
+                // Orbit around the nose rather than lerping straight through the body.
+                // This scroll-driven arc reverses exactly when scrolling upward.
+                const startOffset = camera.position.clone().sub(look);
+                const endOffset = footerEye.clone().sub(footerLook);
+                const startAngle = Math.atan2(startOffset.x, startOffset.z);
+                const endAngle = Math.atan2(endOffset.x, endOffset.z);
+                const angle = THREE.MathUtils.lerp(startAngle, endAngle, blend);
+                const radius = THREE.MathUtils.lerp(Math.hypot(startOffset.x, startOffset.z), Math.hypot(endOffset.x, endOffset.z), blend);
+                const height = THREE.MathUtils.lerp(startOffset.y, endOffset.y, blend);
+                look.lerp(footerLook, blend);
+                camera.position.set(Math.sin(angle) * radius, height, Math.cos(angle) * radius).add(look);
+                camera.clearViewOffset();
+            }
             camera.updateProjectionMatrix(); camera.lookAt(look);
+            renderer.shadowMap.needsUpdate = true;
             renderer.render(scene, camera);
         }
-        if (Math.abs(destination - position) > .0002 || Math.abs(reveal - displayedReveal) > .0002 || Math.abs(entry - displayedEntry) > .0002 || Math.abs(approach - displayedApproach) > .0002 || displayedHandoff !== handoff) wake();
+        if (Math.abs(destination - position) > .0002 || Math.abs(reveal - displayedReveal) > .0002 || Math.abs(entry - displayedEntry) > .0002 || Math.abs(approach - displayedApproach) > .0002 || displayedHandoff !== handoff || displayedFooterTravel !== footerTravel) wake();
     }
     addEventListener('scroll', () => { if (active) { measure(); wake(); } }, { passive: true });
     addEventListener('resize', resize, { passive: true });
@@ -299,8 +361,10 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
         event.preventDefault(); steps[i].scrollIntoView({ behavior: reduced.matches ? 'instant' : 'smooth', block: 'center' });
     }));
     new ResizeObserver(resize).observe(visual);
-    new IntersectionObserver(entries => {
-        active = entries[0].isIntersecting;
+    const visibleSections = new Set();
+    const visibilityObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => { if (entry.isIntersecting) visibleSections.add(entry.target); else visibleSections.delete(entry.target); });
+        active = visibleSections.size > 0;
         if (active) { initialize(); measure(); previous = 0; wake(); }
         else {
             measure(); displayedHandoff = handoff; dockCanvas();
@@ -308,6 +372,8 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
             if (heroView) heroView.canvas.style.opacity = '';
             if (frame !== null) { cancelAnimationFrame(frame); frame = null; }
         }
-    }, { rootMargin: '100% 0px' }).observe(section);
+    }, { rootMargin: '100% 0px' });
+    visibilityObserver.observe(section);
+    if (footer) visibilityObserver.observe(footer);
     return { setModel, wake };
 }
