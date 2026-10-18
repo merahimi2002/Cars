@@ -67,12 +67,15 @@ async function initShowroom() {
         import('./vendor/meshopt_decoder.module.js')
     ]);
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+    window.CarsPerf?.attach(renderer, 'hero');
     renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
     renderer.setClearColor(0x000000, 0);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = .9;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.autoUpdate = false;
+    renderer.shadowMap.needsUpdate = true;
 
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x202033, .022);
@@ -215,7 +218,7 @@ async function initShowroom() {
             gltf = await loader.parseAsync(buffer, '');
             delete window.CarsLocalAssets.models[id];
         } else {
-            gltf = await loader.loadAsync('./assets/models/' + config.file, onProgress);
+            gltf = await loader.loadAsync('./assets/models/' + config.file + '?v=lossless-1', onProgress);
         }
         const model = new THREE.Group();
         model.add(gltf.scene);
@@ -292,7 +295,9 @@ async function initShowroom() {
     let frame = null;
     let rendering = false;
     let previousTime = performance.now();
-    let needsFrames = 0;
+    let renderRequested = false;
+    const previousEye = new THREE.Vector3();
+    const previousOrientation = new THREE.Quaternion();
     const spherical = new THREE.Spherical();
     const target = new THREE.Vector3(0, .65, 0);
     const presets = {
@@ -340,6 +345,7 @@ async function initShowroom() {
         wake();
     }
     function replay() {
+        renderer.shadowMap.needsUpdate = true;
         autoRotate = false;
         rotateButton.setAttribute('aria-pressed', 'false');
         cameraTween = null;
@@ -388,7 +394,7 @@ async function initShowroom() {
         wake();
     }
     function wake() {
-        needsFrames = 80;
+        renderRequested = true;
         if (frame === null && !rendering && visible && !document.hidden) {
             previousTime = performance.now();
             frame = requestAnimationFrame(tick);
@@ -398,9 +404,12 @@ async function initShowroom() {
         frame = null;
         if (!visible || document.hidden || transferPausedAt !== null) return;
         rendering = true;
+        renderRequested = false;
+        let controlsMoving = false;
         const delta = Math.min((now - previousTime) / 1000, .05);
         previousTime = now;
         if (intro) {
+            renderer.shadowMap.needsUpdate = true;
             const t = Math.min((now - intro.start) / 2600, 1);
             const eased = 1 - (1 - t) ** 4;
             car.position.z = -19 * (1 - eased);
@@ -422,13 +431,19 @@ async function initShowroom() {
         } else {
             controls.autoRotate = autoRotate;
             controls.autoRotateSpeed = .7;
-            controls.update(delta);
+            previousEye.copy(camera.position);
+            previousOrientation.copy(camera.quaternion);
+            controlsMoving = controls.update(delta);
+            // OrbitControls' change-event threshold is deliberately coarse.
+            // Let inertia settle below a pixel before stopping the frame loop.
+            controlsMoving ||= previousEye.distanceToSquared(camera.position) > 1e-12 || 1 - Math.abs(previousOrientation.dot(camera.quaternion)) > 1e-12;
         }
         paint.color.lerp(paintTarget, reducedMotion.matches ? 1 : 1 - Math.exp(-delta * 7));
+        const paintMoving = Math.abs(paint.color.r - paintTarget.r) + Math.abs(paint.color.g - paintTarget.g) + Math.abs(paint.color.b - paintTarget.b) > .0001;
+        if (!paintMoving) paint.color.copy(paintTarget);
         renderer.render(scene, camera);
         rendering = false;
-        needsFrames--;
-        if (intro || cameraTween || autoRotate || needsFrames > 0) frame = requestAnimationFrame(tick);
+        if (intro || cameraTween || autoRotate || controlsMoving || paintMoving || renderRequested) frame = requestAnimationFrame(tick);
     }
 
     async function switchCar(id) {
@@ -448,6 +463,7 @@ async function initShowroom() {
             const nextModel = await loadModel(id);
             car.clear();
             car.add(nextModel);
+            renderer.shadowMap.needsUpdate = true;
             currentCar = id;
             refreshPaintPalette();
             paint.color.copy(paintTarget);
@@ -543,6 +559,7 @@ async function initShowroom() {
     reducedMotion.addEventListener('change', () => {
         if (reducedMotion.matches) {
             intro = null;
+            renderer.shadowMap.needsUpdate = true;
             cameraTween = null;
             autoRotate = false;
             car.position.z = 0;
@@ -575,6 +592,7 @@ async function initShowroom() {
     });
     // Available for local asset QA and exported poster rendering.
     function syncSceneTheme() {
+        renderer.shadowMap.needsUpdate = true;
         const dark = document.documentElement.dataset.mode === 'dark';
         const environments = {
             desert: { fog: dark ? 0x283640 : 0xb4c0b9, light: 0xffe9e0, rim: 0xa8c9ff, fill: 0xffc2b5 },

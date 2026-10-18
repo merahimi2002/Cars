@@ -1,4 +1,6 @@
-(() => {
+(async () => {
+    // Explicit, opt-in local performance comparison; absent in normal browsing.
+    if (new URLSearchParams(location.search).has('perf')) await import('../scripts/perf-probe.js');
     function failed(error) {
         console.error('Unable to load showroom script:', error);
         document.querySelector('.showroom-loader').hidden = true;
@@ -12,6 +14,6 @@
         script.onerror = failed;
         document.body.appendChild(script);
     } else {
-        import('./showroom.js?v=36').catch(failed);
+        import('./showroom.js?v=38').catch(failed);
     }
 })();

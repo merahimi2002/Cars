@@ -1,0 +1,669 @@
+{
+  "date": "2026-10-18",
+  "method": "Lossless Meshopt packing and lossless full-resolution WebP, decoded attributes/pixels verified",
+  "models": [
+    {
+      "file": "huracan.glb",
+      "beforeBytes": 19499428,
+      "afterBytes": 15859784,
+      "sha256Before": "8e4b62f46de8f57873517c994523bb9b8e12ad7a5d6303263f1d60fd0c2af0ec",
+      "sha256After": "92737d3fc3c6174a2b9608d04925548cd71bb1a3fbcdb74467c06c66339e4c58",
+      "meshes": 82,
+      "vertices": 315924,
+      "triangles": 308135,
+      "attributesIdentical": true,
+      "transformsIdentical": true,
+      "textures": [
+        {
+          "index": 0,
+          "name": "INT_Display_Corsa_kmh_performante_No_ALA",
+          "width": 960,
+          "height": 360,
+          "beforeBytes": 301374,
+          "afterBytes": 164496,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 1,
+          "name": "INT_MicoDisplay_Evo",
+          "width": 1200,
+          "height": 1920,
+          "beforeBytes": 355920,
+          "afterBytes": 355920,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 2,
+          "name": "Lamborghini_HuracanEvoSpyder_2019_Grille2A_Normal",
+          "width": 512,
+          "height": 512,
+          "beforeBytes": 48728,
+          "afterBytes": 48728,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 3,
+          "name": "Lamborghini_HuracanEvoSpyder_2019_Grille2A_DiffuseAOSO",
+          "width": 512,
+          "height": 512,
+          "beforeBytes": 41851,
+          "afterBytes": 41851,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 4,
+          "name": "Lamborghini_HuracanEvoSpyder_2019_Grille4A_DiffuseAOSO",
+          "width": 128,
+          "height": 128,
+          "beforeBytes": 17741,
+          "afterBytes": 12702,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 5,
+          "name": "Lamborghini_HuracanEvoSpyder_2019_LightA_Diffuse",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 303001,
+          "afterBytes": 303001,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 6,
+          "name": "Lamborghini_HuracanEvoSpyder_2019_LightA_Diffuse_RED",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 786380,
+          "afterBytes": 457920,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 7,
+          "name": "GEN_E34K00_Tire_PirelliPZero-245-35-R19_Black_ultra_N_2020",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 1537792,
+          "afterBytes": 1537792,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 8,
+          "name": "Reifen_Mantel_05",
+          "width": 512,
+          "height": 256,
+          "beforeBytes": 42770,
+          "afterBytes": 42770,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 9,
+          "name": "logo_neu",
+          "width": 512,
+          "height": 512,
+          "beforeBytes": 61537,
+          "afterBytes": 61537,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 10,
+          "name": "brake_disc_spec",
+          "width": 256,
+          "height": 256,
+          "beforeBytes": 27922,
+          "afterBytes": 27922,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 11,
+          "name": "GEN_E35K00_Tire_PirelliPZero-305-35-R19_Black_ultra_N_2020",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 1543794,
+          "afterBytes": 1543794,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 12,
+          "name": "Lamborghini_HuracanEvoSpyder_2019_Grille1A_Normal",
+          "width": 512,
+          "height": 512,
+          "beforeBytes": 128719,
+          "afterBytes": 128719,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 13,
+          "name": "Lamborghini_HuracanEvoSpyder_2019_Grille1A_DiffuseAOSO",
+          "width": 512,
+          "height": 512,
+          "beforeBytes": 51809,
+          "afterBytes": 51809,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 14,
+          "name": "Headrest_stitched_logo_GialloBelenus_05",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 474693,
+          "afterBytes": 474693,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 15,
+          "name": "Lamborghini_HuracanEvoSpyder_2019_BadgeA_Normal",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 737493,
+          "afterBytes": 737493,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 16,
+          "name": "Lamborghini_HuracanEvoSpyder_2019_BadgeA_DiffuseAOSO",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 384612,
+          "afterBytes": 384612,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 17,
+          "name": "Lamborghini_HuracanEvoSpyder_2019_BadgeA_DiffuseAOSO",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 416346,
+          "afterBytes": 416346,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 18,
+          "name": "Lamborghini_HuracanEvoSpyder_2019_InteriorA_DiffuseAOSO_Rev02 - Copia",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 208288,
+          "afterBytes": 208288,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        }
+      ]
+    },
+    {
+      "file": "ferrari-458.glb",
+      "beforeBytes": 1681572,
+      "afterBytes": 1681572,
+      "sha256Before": "cafe3f48da6797aa9bde75ca768bc5b57db366575fd233e90df186ae988a876e",
+      "sha256After": "cafe3f48da6797aa9bde75ca768bc5b57db366575fd233e90df186ae988a876e",
+      "unchanged": true,
+      "reason": "Already Draco compressed; no textures"
+    },
+    {
+      "file": "bmw-m4.glb",
+      "beforeBytes": 22739084,
+      "afterBytes": 14251860,
+      "sha256Before": "913ac951ba2645777c91393b86aed2def2433a807e57e626b203908aa474b8fb",
+      "sha256After": "1af27262c9008bc799aa680e7911c086adace41d4ac310f3bcb6bd7deabd0905",
+      "meshes": 30,
+      "vertices": 564793,
+      "triangles": 206593,
+      "attributesIdentical": true,
+      "transformsIdentical": true,
+      "textures": [
+        {
+          "index": 0,
+          "name": "",
+          "width": 512,
+          "height": 512,
+          "beforeBytes": 55489,
+          "afterBytes": 41774,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 1,
+          "name": "",
+          "width": 512,
+          "height": 512,
+          "beforeBytes": 116317,
+          "afterBytes": 65164,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 2,
+          "name": "",
+          "width": 512,
+          "height": 512,
+          "beforeBytes": 61105,
+          "afterBytes": 31270,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 3,
+          "name": "",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 302036,
+          "afterBytes": 210902,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 4,
+          "name": "",
+          "width": 4,
+          "height": 4,
+          "beforeBytes": 83,
+          "afterBytes": 83,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 5,
+          "name": "",
+          "width": 512,
+          "height": 512,
+          "beforeBytes": 55489,
+          "afterBytes": 41774,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 6,
+          "name": "",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 766501,
+          "afterBytes": 408492,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 7,
+          "name": "",
+          "width": 512,
+          "height": 512,
+          "beforeBytes": 55489,
+          "afterBytes": 41774,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 8,
+          "name": "",
+          "width": 512,
+          "height": 512,
+          "beforeBytes": 35622,
+          "afterBytes": 26712,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 9,
+          "name": "",
+          "width": 512,
+          "height": 512,
+          "beforeBytes": 1244,
+          "afterBytes": 636,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 10,
+          "name": "",
+          "width": 512,
+          "height": 512,
+          "beforeBytes": 155985,
+          "afterBytes": 71846,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 11,
+          "name": "",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 549156,
+          "afterBytes": 272442,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        }
+      ]
+    },
+    {
+      "file": "porsche-911.glb",
+      "beforeBytes": 4223360,
+      "afterBytes": 4033808,
+      "sha256Before": "0322d245fd7d362bc89cce5e4bba282cc445bbf98eba800b4e7cfb0e5c710677",
+      "sha256After": "23be3f7dbacfd57e5f748f2a2ff1d8ba37563df66c948ed77cf6139db336f9fc",
+      "meshes": 45,
+      "vertices": 126974,
+      "triangles": 197331,
+      "attributesIdentical": true,
+      "transformsIdentical": true,
+      "textures": [
+        {
+          "index": 0,
+          "name": "",
+          "width": 512,
+          "height": 512,
+          "beforeBytes": 164582,
+          "afterBytes": 155744,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 1,
+          "name": "",
+          "width": 1024,
+          "height": 256,
+          "beforeBytes": 156022,
+          "afterBytes": 156022,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 2,
+          "name": "",
+          "width": 1024,
+          "height": 256,
+          "beforeBytes": 46995,
+          "afterBytes": 31676,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 3,
+          "name": "",
+          "width": 512,
+          "height": 512,
+          "beforeBytes": 201707,
+          "afterBytes": 201707,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 4,
+          "name": "",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 251338,
+          "afterBytes": 232912,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 5,
+          "name": "",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 503349,
+          "afterBytes": 413642,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 6,
+          "name": "",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 519206,
+          "afterBytes": 519206,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 7,
+          "name": "",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 72392,
+          "afterBytes": 55156,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 8,
+          "name": "",
+          "width": 512,
+          "height": 1024,
+          "beforeBytes": 198708,
+          "afterBytes": 198708,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 9,
+          "name": "",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 328457,
+          "afterBytes": 288198,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        }
+      ]
+    },
+    {
+      "file": "nissan-r34.glb",
+      "beforeBytes": 3018480,
+      "afterBytes": 2315756,
+      "sha256Before": "8a2d19a8cc334eafcb7011b54f55705341d200264e1dc0c3991fcc06f553d021",
+      "sha256After": "851a4447a24d018f1fc386fc38edf18ea80c2c2177317a4a1d548d026359841a",
+      "meshes": 15,
+      "vertices": 22246,
+      "triangles": 25094,
+      "attributesIdentical": true,
+      "transformsIdentical": true,
+      "textures": [
+        {
+          "index": 0,
+          "name": "",
+          "width": 512,
+          "height": 512,
+          "beforeBytes": 179366,
+          "afterBytes": 179366,
+          "converted": false,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 1,
+          "name": "",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 140642,
+          "afterBytes": 82330,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 2,
+          "name": "",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 662389,
+          "afterBytes": 339318,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 3,
+          "name": "",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 796521,
+          "afterBytes": 568074,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 4,
+          "name": "",
+          "width": 1024,
+          "height": 1024,
+          "beforeBytes": 1012135,
+          "afterBytes": 903858,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        },
+        {
+          "index": 5,
+          "name": "",
+          "width": 512,
+          "height": 256,
+          "beforeBytes": 29991,
+          "afterBytes": 27408,
+          "converted": true,
+          "decodedPixelsIdentical": true
+        }
+      ]
+    }
+  ],
+  "beforeBytes": 51161924,
+  "afterBytes": 38142780,
+  "savedPercent": 25.45,
+  "localScripts": {
+    "beforeBytes": 68216419,
+    "afterBytes": 50857559
+  },
+  "totalPackageBeforeBytes": 119378343,
+  "totalPackageAfterBytes": 89000339,
+  "browserVisualComparison": {
+    "viewport": [
+      1280,
+      900
+    ],
+    "crop": {
+      "left": 120,
+      "top": 310,
+      "width": 900,
+      "height": 370
+    },
+    "results": [
+      {
+        "model": "huracan",
+        "meanChannelDifference": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "model": "bmw",
+        "meanChannelDifference": 0.0015045045045045044,
+        "maxChannelDifference": 8
+      },
+      {
+        "model": "porsche",
+        "meanChannelDifference": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "model": "nissan",
+        "meanChannelDifference": 0,
+        "maxChannelDifference": 0
+      }
+    ]
+  },
+  "functionalTests": {
+    "mobileModule": {
+      "complete": true,
+      "mode": "smoke",
+      "viewport": [
+        390,
+        844
+      ],
+      "checks": [
+        {
+          "model": "porsche",
+          "passed": [
+            "palette",
+            "custom paint",
+            "front camera",
+            "auto rotate",
+            "three environments",
+            "story/footer sync",
+            "forward/reverse scroll",
+            "no overflow"
+          ]
+        },
+        {
+          "model": "nissan",
+          "passed": [
+            "palette",
+            "custom paint",
+            "front camera",
+            "auto rotate",
+            "three environments",
+            "story/footer sync",
+            "forward/reverse scroll",
+            "no overflow"
+          ]
+        }
+      ]
+    },
+    "desktopStandalone": {
+      "complete": true,
+      "mode": "smoke",
+      "viewport": [
+        1280,
+        900
+      ],
+      "checks": [
+        {
+          "model": "porsche",
+          "passed": [
+            "palette",
+            "custom paint",
+            "front camera",
+            "auto rotate",
+            "three environments",
+            "story/footer sync",
+            "forward/reverse scroll",
+            "no overflow"
+          ]
+        },
+        {
+          "model": "nissan",
+          "passed": [
+            "palette",
+            "custom paint",
+            "front camera",
+            "auto rotate",
+            "three environments",
+            "story/footer sync",
+            "forward/reverse scroll",
+            "no overflow"
+          ]
+        }
+      ]
+    }
+  },
+  "runtimeVerification": {
+    "models": [
+      "huracan",
+      "bmw",
+      "porsche",
+      "nissan"
+    ],
+    "bundledDecoderCompatible": true,
+    "framingAndFourWheelRigsMatchOriginal": true,
+    "porscheFrontWheelRotationChecked": true
+  }
+}

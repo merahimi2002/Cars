@@ -1,0 +1,368 @@
+{
+  "date": "2026-10-18",
+  "baseline": "8ab2ef101c9c1d1b25d71eb18b6af2b14ed1f50b",
+  "environment": "In-app browser, same computer, DPR 1; mobile viewport emulation, no hardware throttling",
+  "model": "nissan",
+  "runs": {
+    "desktop": {
+      "before": {
+        "complete": true,
+        "viewport": [
+          1280,
+          900
+        ],
+        "dpr": 1,
+        "model": "nissan",
+        "results": [
+          {
+            "name": "paint-settle",
+            "renders": 80,
+            "hero": 80,
+            "story": 0,
+            "shadowUpdates": 80,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 190.5,
+            "elapsedMs": 3501.7,
+            "frameP50Ms": 33.3,
+            "frameP95Ms": 50
+          },
+          {
+            "name": "hero-idle",
+            "renders": 0,
+            "hero": 0,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 0,
+            "elapsedMs": 2001.2,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8
+          },
+          {
+            "name": "camera-scroll",
+            "renders": 94,
+            "hero": 0,
+            "story": 94,
+            "shadowUpdates": 94,
+            "resizeCalls": 94,
+            "layoutReads": 1235,
+            "renderCpuMs": 92.1,
+            "elapsedMs": 1821.3,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 33.3
+          },
+          {
+            "name": "story-idle",
+            "renders": 0,
+            "hero": 0,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 0,
+            "elapsedMs": 2000.8,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8
+          },
+          {
+            "name": "footer-forward",
+            "renders": 85,
+            "hero": 0,
+            "story": 85,
+            "shadowUpdates": 85,
+            "resizeCalls": 85,
+            "layoutReads": 1187,
+            "renderCpuMs": 90.1,
+            "elapsedMs": 1816.1,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 33.4
+          },
+          {
+            "name": "footer-reverse",
+            "renders": 89,
+            "hero": 0,
+            "story": 89,
+            "shadowUpdates": 89,
+            "resizeCalls": 89,
+            "layoutReads": 1348,
+            "renderCpuMs": 83,
+            "elapsedMs": 1816.8,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 50.2
+          }
+        ]
+      },
+      "after": {
+        "complete": true,
+        "viewport": [
+          1280,
+          900
+        ],
+        "dpr": 1,
+        "model": "nissan",
+        "results": [
+          {
+            "name": "paint-settle",
+            "renders": 41,
+            "hero": 41,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 89.5,
+            "elapsedMs": 3501.4,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 33.5
+          },
+          {
+            "name": "hero-idle",
+            "renders": 0,
+            "hero": 0,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 0,
+            "elapsedMs": 2001.2,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8
+          },
+          {
+            "name": "camera-scroll",
+            "renders": 108,
+            "hero": 0,
+            "story": 108,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 108,
+            "renderCpuMs": 94.4,
+            "elapsedMs": 1814,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8
+          },
+          {
+            "name": "story-idle",
+            "renders": 0,
+            "hero": 0,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 0,
+            "elapsedMs": 2000.1,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8
+          },
+          {
+            "name": "footer-forward",
+            "renders": 102,
+            "hero": 0,
+            "story": 102,
+            "shadowUpdates": 37,
+            "resizeCalls": 33,
+            "layoutReads": 140,
+            "renderCpuMs": 107.2,
+            "elapsedMs": 1805.7,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.9
+          },
+          {
+            "name": "footer-reverse",
+            "renders": 90,
+            "hero": 0,
+            "story": 90,
+            "shadowUpdates": 90,
+            "resizeCalls": 42,
+            "layoutReads": 182,
+            "renderCpuMs": 99.5,
+            "elapsedMs": 1813,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 33.4
+          }
+        ]
+      }
+    },
+    "mobile": {
+      "before": {
+        "complete": true,
+        "viewport": [
+          390,
+          844
+        ],
+        "dpr": 1,
+        "model": "nissan",
+        "results": [
+          {
+            "name": "paint-settle",
+            "renders": 80,
+            "hero": 80,
+            "story": 0,
+            "shadowUpdates": 80,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 132.9,
+            "elapsedMs": 3502.3,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8
+          },
+          {
+            "name": "hero-idle",
+            "renders": 0,
+            "hero": 0,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 0,
+            "elapsedMs": 2000.8,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8
+          },
+          {
+            "name": "camera-scroll",
+            "renders": 108,
+            "hero": 0,
+            "story": 108,
+            "shadowUpdates": 108,
+            "resizeCalls": 108,
+            "layoutReads": 1430,
+            "renderCpuMs": 99,
+            "elapsedMs": 1806.4,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8
+          },
+          {
+            "name": "story-idle",
+            "renders": 0,
+            "hero": 0,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 0,
+            "elapsedMs": 2000.4,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8
+          },
+          {
+            "name": "footer-forward",
+            "renders": 107,
+            "hero": 0,
+            "story": 107,
+            "shadowUpdates": 107,
+            "resizeCalls": 107,
+            "layoutReads": 1516,
+            "renderCpuMs": 95.9,
+            "elapsedMs": 1810.9,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8
+          },
+          {
+            "name": "footer-reverse",
+            "renders": 108,
+            "hero": 0,
+            "story": 108,
+            "shadowUpdates": 108,
+            "resizeCalls": 108,
+            "layoutReads": 1620,
+            "renderCpuMs": 92.3,
+            "elapsedMs": 1814.9,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8
+          }
+        ]
+      },
+      "after": {
+        "complete": true,
+        "viewport": [
+          390,
+          844
+        ],
+        "dpr": 1,
+        "model": "nissan",
+        "results": [
+          {
+            "name": "paint-settle",
+            "renders": 72,
+            "hero": 72,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 119.2,
+            "elapsedMs": 3503,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8
+          },
+          {
+            "name": "hero-idle",
+            "renders": 0,
+            "hero": 0,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 0,
+            "elapsedMs": 2000.7,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8
+          },
+          {
+            "name": "camera-scroll",
+            "renders": 108,
+            "hero": 0,
+            "story": 108,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 109,
+            "renderCpuMs": 95,
+            "elapsedMs": 1806.8,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8
+          },
+          {
+            "name": "story-idle",
+            "renders": 0,
+            "hero": 0,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 0,
+            "elapsedMs": 2000.4,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8
+          },
+          {
+            "name": "footer-forward",
+            "renders": 107,
+            "hero": 0,
+            "story": 107,
+            "shadowUpdates": 57,
+            "resizeCalls": 53,
+            "layoutReads": 164,
+            "renderCpuMs": 91.5,
+            "elapsedMs": 1811.9,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8
+          },
+          {
+            "name": "footer-reverse",
+            "renders": 109,
+            "hero": 0,
+            "story": 109,
+            "shadowUpdates": 109,
+            "resizeCalls": 62,
+            "layoutReads": 218,
+            "renderCpuMs": 122.4,
+            "elapsedMs": 1814.7,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8
+          }
+        ]
+      }
+    }
+  }
+}

@@ -12,6 +12,12 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
     let footerTravel = 0, displayedFooterTravel = 0;
     const steps = [...section.querySelectorAll('.drive-step')];
     const jumps = [...section.querySelectorAll('[data-drive-jump]')];
+    const layout = section.querySelector('.drive-layout');
+    const stats = section.querySelector('.drive-stats');
+    const statNodes = [...section.querySelectorAll('[data-drive-stat]')];
+    const jumpGroup = section.querySelector('.drive-jumps');
+    const detailLabel = section.querySelector('[data-drive-detail]');
+    const calloutLabel = section.querySelector('[data-drive-callout]');
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     const mobile = matchMedia('(max-width: 767px)');
     const heading = section.querySelector('.drive-header');
@@ -46,6 +52,22 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
     let hasRevealedStats = false;
     let unavailable = false;
     const look = new THREE.Vector3();
+    // Reuse scratch storage in the animation loop; keep cached layout reads
+    // ahead of style writes and coalesce multiple scroll events into one frame.
+    const scratch = Array.from({ length: 6 }, () => new THREE.Vector3());
+    const travelRect = {};
+    let footerFromRect, footerToRect, measurePending = false;
+    let layoutMetrics = null;
+    let renderWidth = 0, renderHeight = 0;
+    let lastUiFade = null, lastUiLeaving = null;
+    const shadowPosition = new THREE.Vector3(Infinity, Infinity, Infinity);
+    const shadowWheelAngles = [];
+    function setRenderSize(width, height) {
+        width = Math.max(1, Math.round(width)); height = Math.max(1, Math.round(height));
+        if (width === renderWidth && height === renderHeight) return;
+        renderer.setSize(width, height, false);
+        renderWidth = width; renderHeight = height;
+    }
     const clamp = THREE.MathUtils.clamp;
     const ease = t => t * t * (3 - 2 * t);
     // Body placement, camera framing and axle travel share one arrival clock.
@@ -63,6 +85,7 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
         return copy;
     }
     function setModel(id, source) {
+        layoutMetrics = null;
         latest = { id, source };
         const data = driveData[id];
         section.dataset.car = id;
@@ -91,6 +114,9 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
         })).filter(wheel => wheel.pivot);
         model.traverse(node => { if (node.isMesh) node.castShadow = true; });
         scene.add(model);
+        renderer.shadowMap.needsUpdate = true;
+        shadowPosition.set(Infinity, Infinity, Infinity);
+        shadowWheelAngles.length = 0;
         const hub = latest.source.userData.wheels?.find(wheel => wheel.center.x > 0 && wheel.center.z > 0)?.center;
         const wheel = hub ? hub.clone() : new THREE.Vector3(1.05, .45, 1.5);
         shots = [
@@ -106,6 +132,7 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
         if (renderer || !latest || unavailable) return;
         try {
             renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'low-power' });
+            window.CarsPerf?.attach(renderer, 'story');
             renderer.setPixelRatio(Math.min(devicePixelRatio, mobile.matches ? 1.25 : 1.5));
             renderer.shadowMap.enabled = true;
             renderer.shadowMap.type = THREE.VSMShadowMap;
@@ -143,21 +170,39 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
         }
     }
     function measure() {
+        measurePending = false;
+        // Document-space geometry is stable while scrolling. Invalidate it on
+        // resize, font/layout changes and model text changes, not every event.
+        if (!layoutMetrics) {
+            const visualRect = visual.getBoundingClientRect();
+            const pinnedTop = parseFloat(getComputedStyle(visual).top) || 0;
+            layoutMetrics = {
+                centers: steps.map(step => { const r = step.getBoundingClientRect(); return r.top + scrollY + r.height / 2; }),
+                statsTop: stats.getBoundingClientRect().top + scrollY
+            };
+            if (heroView) {
+                const heroRect = heroView.hero.getBoundingClientRect();
+                const source = heroView.canvas.getBoundingClientRect();
+                const target = anchor.getBoundingClientRect();
+                layoutMetrics.start = heroRect.top + scrollY;
+                layoutMetrics.end = layout.getBoundingClientRect().top + scrollY - pinnedTop;
+                startRect = { left: source.left, top: source.top - heroRect.top, width: source.width, height: source.height };
+                endRect = { left: target.left, top: target.top - visualRect.top + pinnedTop, width: target.width, height: target.height };
+            }
+            if (footerSlot) {
+                const footerRect = footer.getBoundingClientRect(), slot = footerSlot.getBoundingClientRect();
+                layoutMetrics.footerTop = footerRect.top + scrollY;
+                layoutMetrics.slotTop = slot.top + scrollY;
+                footerToRect = { left: slot.left, top: slot.top, width: slot.width, height: slot.height };
+            }
+        }
         let travelStart = 0, travelEnd = 0;
         if (heroView) {
-            const heroRect = heroView.hero.getBoundingClientRect();
-            const source = heroView.canvas.getBoundingClientRect();
-            const target = anchor.getBoundingClientRect();
-            const layout = section.querySelector('.drive-layout').getBoundingClientRect();
-            const pinnedTop = parseFloat(getComputedStyle(visual).top) || 0;
-            const start = heroRect.top + scrollY;
-            const end = layout.top + scrollY - pinnedTop;
+            const start = layoutMetrics.start, end = layoutMetrics.end;
             travelStart = start; travelEnd = end;
             const nextHandoff = clamp((scrollY - start) / Math.max(1, end - start), 0, 1);
             if (Math.abs(nextHandoff - handoff) > .0001) returning = nextHandoff < handoff;
             handoff = nextHandoff;
-            startRect = { left: source.left, top: source.top - heroRect.top, width: source.width, height: source.height };
-            endRect = { left: target.left, top: target.top - visual.getBoundingClientRect().top + pinnedTop, width: target.width, height: target.height };
             if (handoff === 0 && displayedHandoff === 0) heroFrame = null;
             else if (!heroFrame) {
                 heroFrame = heroView.capture();
@@ -165,31 +210,34 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
             }
         }
         if (footerSlot) {
-            const footerTop = footer.getBoundingClientRect().top;
+            const footerTop = layoutMetrics.footerTop - scrollY;
             footerTravel = clamp((innerHeight - footerTop) / (innerHeight * .8), 0, 1);
+            if (footerTravel > 0 || displayedFooterTravel > 0) footerFromRect = anchor.getBoundingClientRect();
+            footerToRect.top = layoutMetrics.slotTop - scrollY;
         }
         entry = clamp((innerHeight - visual.getBoundingClientRect().top) / innerHeight, 0, 1);
         const focus = innerHeight * (mobile.matches ? .73 : .55);
-        const centers = steps.map(step => { const rect = step.getBoundingClientRect(); return rect.top + rect.height / 2; });
+        const centers = layoutMetrics.centers;
         if (heroView) {
             // The mobile heading and specs can extend beyond the handoff. Keep
             // the approach moving until the first detail camera actually starts.
             const parkedAt = travelStart + (travelEnd - travelStart) * .6;
-            const detailsAt = Math.max(travelEnd, centers[0] + scrollY - focus);
+            const detailsAt = Math.max(travelEnd, centers[0] - focus);
             approach = clamp((scrollY - parkedAt) / Math.max(1, detailsAt - parkedAt), 0, 1);
         }
         destination = centers.length - 1;
         for (let i = 0; i < centers.length - 1; i++) {
-            if (focus <= centers[i + 1]) { destination = i + clamp((focus - centers[i]) / Math.max(1, centers[i + 1] - centers[i]), 0, 1); break; }
+            if (focus + scrollY <= centers[i + 1]) { destination = i + clamp((focus + scrollY - centers[i]) / Math.max(1, centers[i + 1] - centers[i]), 0, 1); break; }
         }
-        if (section.querySelector('.drive-stats').getBoundingClientRect().top < innerHeight * .95) hasRevealedStats = true;
+        if (layoutMetrics.statsTop - scrollY < innerHeight * .95) hasRevealedStats = true;
         reveal = hasRevealedStats ? 1 : 0;
     }
     function resize() {
+        layoutMetrics = null;
         if (heroView && heroFrame) heroFrame = heroView.capture();
         if (renderer) {
             const width = canvas.clientWidth, height = canvas.clientHeight;
-            if (width && height) { renderer.setSize(width, height, false); camera.aspect = width / height; camera.updateProjectionMatrix(); }
+            if (width && height) { setRenderSize(width, height); camera.aspect = width / height; camera.updateProjectionMatrix(); }
         }
         measure(); wake();
     }
@@ -206,6 +254,8 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
         // On return, controls follow the final crossfade back to the hero.
         // Keep interaction locked until both body and wheels have settled.
         const fade = ease(clamp(progress / (returning ? .065 : .025), 0, 1));
+        if (fade === lastUiFade && leaving === lastUiLeaving) return;
+        lastUiFade = fade; lastUiLeaving = leaving;
         heroView.hero.classList.toggle('is-handoff', leaving);
         heroUi.forEach(node => {
             node.inert = leaving;
@@ -221,6 +271,7 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
     function tick(now) {
         frame = null;
         if (!active || document.hidden) return;
+        if (measurePending) measure();
         const dt = Math.min((now - (previous || now - 16)) / 1000, .05); previous = now;
         const damping = reduced.matches ? 1 : 1 - Math.exp(-dt * 7);
         position += (destination - position) * damping;
@@ -237,20 +288,20 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
         // Otherwise they scroll through the stationary car during the handoff.
         const interfaceReveal = heroView && !reduced.matches ? ease(clamp((displayedHandoff - .94) / .06, 0, 1)) : 1;
         visual.style.setProperty('--drive-interface-opacity', String(interfaceReveal));
-        section.querySelector('.drive-jumps').inert = interfaceReveal < .99;
+        jumpGroup.inert = interfaceReveal < .99;
         const index = clamp(Math.round(position), 0, steps.length - 1);
         if (index !== lastStep) {
             lastStep = index;
             steps.forEach((step, i) => step.classList.toggle('is-active', i === index));
             jumps.forEach((jump, i) => { if (i === index) jump.setAttribute('aria-current', 'step'); else jump.removeAttribute('aria-current'); });
-            section.querySelector('[data-drive-detail]').textContent = ['نمای کلی', 'رینگ و لاستیک', 'امضای چراغ‌ها', 'فضای راننده', 'انتخاب تو'][index];
-            section.querySelector('[data-drive-callout]').textContent = ['نمای کلی', 'رینگ و لاستیک', 'امضای چراغ‌ها', 'فضای راننده', 'انتخاب تو'][index];
+            detailLabel.textContent = ['نمای کلی', 'رینگ و لاستیک', 'امضای چراغ‌ها', 'فضای راننده', 'انتخاب تو'][index];
+            calloutLabel.textContent = detailLabel.textContent;
             section.dataset.step = String(index);
         }
         section.style.setProperty('--drive-progress', String(position / 4));
         if (latest) {
             const text = driveData[latest.id].stats.map((value, i) => format(i === 1 ? value * ease(displayedReveal) : Math.round(value * ease(displayedReveal)))).join('|');
-            if (text !== statsText) { statsText = text; section.querySelectorAll('[data-drive-stat]').forEach((node, i) => { node.textContent = text.split('|')[i]; }); }
+            if (text !== statsText) { statsText = text; const values = text.split('|'); statNodes.forEach((node, i) => { node.textContent = values[i]; }); }
         }
         if (renderer && shots.length) {
             // First unwind detail close-ups to the parked overview; then reverse
@@ -259,11 +310,11 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
             const overview = heroView && !reduced.matches ? ease(clamp((displayedHandoff - .6) / .4, 0, 1)) : 1;
             const shotPosition = position * overview;
             const i = Math.min(3, Math.floor(shotPosition)), t = ease(shotPosition - i), a = shots[i], b = shots[i + 1];
-            const eye = a.eye.map((value, axis) => THREE.MathUtils.lerp(value, b.eye[axis], t));
-            const aim = a.aim.map((value, axis) => THREE.MathUtils.lerp(value, b.aim[axis], t));
+            const eye = scratch[0].fromArray(a.eye).lerp(scratch[1].fromArray(b.eye), t);
+            const aim = scratch[2].fromArray(a.aim).lerp(scratch[3].fromArray(b.aim), t);
             camera.clearViewOffset();
             camera.aspect = endRect ? endRect.width / endRect.height : canvas.clientWidth / canvas.clientHeight;
-            look.fromArray(aim); camera.position.fromArray(eye);
+            look.copy(aim); camera.position.copy(eye);
             // Keep the full car inside narrow screens; close-ups retain their framing.
             const wide = Math.max(1, 1.22 / camera.aspect);
             const overviewWeight = 1 - ease(clamp(shotPosition, 0, 1)) + ease(clamp(shotPosition - 3, 0, 1));
@@ -274,7 +325,7 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
             const fit = (1 + (wide - 1) * (.2 + .8 * overviewWeight)) * approachFit;
             camera.position.sub(look).multiplyScalar(fit).add(look);
             camera.lookAt(look); camera.updateMatrixWorld(true); camera.updateProjectionMatrix();
-            const endAnchor = new THREE.Vector3(0, .65, 0).project(camera);
+            const endAnchor = scratch[0].set(0, .65, 0).project(camera);
             const footerActive = !!footerSlot && displayedFooterTravel > .0001 && displayedHandoff >= .999;
             canvas.classList.toggle('is-footer-background', footerActive);
             edgeBlur.classList.toggle('is-footer-background', footerActive);
@@ -285,19 +336,19 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
                     document.body.append(canvas, edgeBlur);
                     canvas.classList.add('drive-canvas-travelling'); edgeBlur.classList.add('is-travelling'); travelling = true;
                 }
-                const rect = {};
+                const rect = travelRect;
                 for (const key of ['left', 'top', 'width', 'height']) rect[key] = THREE.MathUtils.lerp(startRect[key], endRect[key], blend);
                 for (const key of ['left', 'top', 'width', 'height']) {
                     canvas.style[key] = rect[key] + 'px'; edgeBlur.style[key] = rect[key] + 'px';
                 }
-                renderer.setSize(Math.round(rect.width), Math.round(rect.height), false);
+                setRenderSize(rect.width, rect.height);
                 camera.aspect = rect.width / rect.height;
                 camera.position.lerp(heroFrame.eye, 1 - blend); look.lerp(heroFrame.aim, 1 - blend);
                 model.position.copy(latest.source.position).addScaledVector(heroFrame.translation, 1 - blend);
                 // Keep a single projected centre throughout the move. Interpolating
                 // view offsets and aspect alone makes low cars dip near the finish.
                 camera.lookAt(look); camera.updateMatrixWorld(true); camera.updateProjectionMatrix();
-                const point = new THREE.Vector3(0, .65, 0).addScaledVector(heroFrame.translation, 1 - blend).project(camera);
+                const point = scratch[1].set(0, .65, 0).addScaledVector(heroFrame.translation, 1 - blend).project(camera);
                 const startY = startRect.top + heroFrame.anchorY * startRect.height;
                 const endY = endRect.top + (1 - endAnchor.y) * .5 * endRect.height;
                 const desiredY = THREE.MathUtils.lerp(startY, endY, blend);
@@ -312,7 +363,7 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
                 if (displayedFooterTravel === 0) dockCanvas();
                 model.position.copy(latest.source.position);
                 if (heroView) heroView.canvas.style.opacity = reduced.matches || handoff === 0 ? '' : '0';
-                if (endRect && displayedFooterTravel === 0) renderer.setSize(Math.round(endRect.width), Math.round(endRect.height), false);
+                if (endRect && displayedFooterTravel === 0) setRenderSize(endRect.width, endRect.height);
             }
             // Distance / radius gives axle rotation. Absolute scroll progress
             // makes reverse scrolling retrace the wheels without accumulated drift.
@@ -322,30 +373,30 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
             });
             if (footerSlot && displayedFooterTravel > 0 && displayedHandoff >= .999) {
                 const blend = reduced.matches ? 1 : ease(displayedFooterTravel);
-                const from = anchor.getBoundingClientRect(), to = footerSlot.getBoundingClientRect();
+                const from = footerFromRect, to = footerToRect;
                 // Preserve the source's projected centre before changing aspect.
-                const hub = new THREE.Vector3(0, .65, 0);
+                const hub = scratch[0].set(0, .65, 0);
                 camera.updateProjectionMatrix(); camera.lookAt(look); camera.updateMatrixWorld(true);
-                const sourceAnchor = hub.clone().project(camera);
+                const sourceAnchor = scratch[1].copy(hub).project(camera);
                 if (!travelling) {
                     document.body.append(canvas, edgeBlur);
                     canvas.classList.add('drive-canvas-travelling'); edgeBlur.classList.add('is-travelling'); travelling = true;
                 }
-                const rect = {};
+                const rect = travelRect;
                 for (const key of ['left', 'top', 'width', 'height']) {
                     rect[key] = THREE.MathUtils.lerp(from[key], to[key], blend);
                     canvas.style[key] = edgeBlur.style[key] = rect[key] + 'px';
                 }
                 canvas.style.opacity = '1'; edgeBlur.style.opacity = '1';
-                renderer.setSize(Math.max(1, Math.round(rect.width)), Math.max(1, Math.round(rect.height)), false);
+                setRenderSize(rect.width, rect.height);
                 camera.aspect = rect.width / rect.height;
-                const footerLook = new THREE.Vector3(0, .65, 0);
-                const footerEye = new THREE.Vector3(-5.8, 1.9, 5.3);
+                const footerLook = scratch[2].set(0, .65, 0);
+                const footerEye = scratch[3].set(-5.8, 1.9, 5.3);
                 footerEye.sub(footerLook).multiplyScalar(Math.max(1, 1.15 / camera.aspect) * (mobile.matches ? 1.2 : 1)).add(footerLook);
                 // Orbit around the nose rather than lerping straight through the body.
                 // This scroll-driven arc reverses exactly when scrolling upward.
-                const startOffset = camera.position.clone().sub(look);
-                const endOffset = footerEye.clone().sub(footerLook);
+                const startOffset = scratch[4].copy(camera.position).sub(look);
+                const endOffset = scratch[5].copy(footerEye).sub(footerLook);
                 const startAngle = Math.atan2(startOffset.x, startOffset.z);
                 const endAngle = Math.atan2(endOffset.x, endOffset.z);
                 const angle = THREE.MathUtils.lerp(startAngle, endAngle, blend);
@@ -370,12 +421,20 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
                     rect.width, rect.height);
             }
             camera.updateProjectionMatrix(); camera.lookAt(look);
-            renderer.shadowMap.needsUpdate = true;
+            // A camera move does not change light-space depth. Refresh only
+            // when a caster moves (body travel, rolling wheels, or a new model).
+            let shadowDirty = !shadowPosition.equals(model.position);
+            shadowPosition.copy(model.position);
+            wheelCopies.forEach((wheel, i) => {
+                if (shadowWheelAngles[i] !== wheel.pivot.rotation.x) shadowDirty = true;
+                shadowWheelAngles[i] = wheel.pivot.rotation.x;
+            });
+            if (shadowDirty) renderer.shadowMap.needsUpdate = true;
             renderer.render(scene, camera);
         }
         if (Math.abs(destination - position) > .0002 || Math.abs(reveal - displayedReveal) > .0002 || Math.abs(entry - displayedEntry) > .0002 || Math.abs(approach - displayedApproach) > .0002 || displayedHandoff !== handoff || displayedFooterTravel !== footerTravel) wake();
     }
-    addEventListener('scroll', () => { if (active) { measure(); wake(); } }, { passive: true });
+    addEventListener('scroll', () => { if (active) { measurePending = true; wake(); } }, { passive: true });
     addEventListener('resize', resize, { passive: true });
     mobile.addEventListener('change', () => { positionHeading(); resize(); });
     document.addEventListener('visibilitychange', () => { if (!document.hidden) { measure(); wake(); } });
@@ -383,7 +442,11 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
     jumps.forEach((jump, i) => jump.addEventListener('click', event => {
         event.preventDefault(); steps[i].scrollIntoView({ behavior: reduced.matches ? 'instant' : 'smooth', block: 'center' });
     }));
-    new ResizeObserver(resize).observe(visual);
+    const layoutObserver = new ResizeObserver(resize);
+    layoutObserver.observe(visual);
+    layoutObserver.observe(section);
+    if (footer) layoutObserver.observe(footer);
+    if (document.fonts) document.fonts.ready.then(() => { layoutMetrics = null; measurePending = true; wake(); });
     const visibleSections = new Set();
     const visibilityObserver = new IntersectionObserver(entries => {
         entries.forEach(entry => { if (entry.isIntersecting) visibleSections.add(entry.target); else visibleSections.delete(entry.target); });
