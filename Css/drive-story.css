@@ -118,6 +118,8 @@ canvas.drive-canvas, .showroom.is-handoff .showroom-canvas {
 .drive-unavailable .drive-canvas { display: none; }
 
 @media (max-width: 767px) {
+    .drive-visual { top: 0; }
+    #contact, #discover { scroll-margin-top: 20px; }
     .drive-header { padding: 40px 0 28px; }
     .drive-header h2 { font-size: clamp(1.55rem, 5.6vw, 2.05rem); }
     .drive-layout { display: block; padding: 0; }
@@ -137,7 +139,7 @@ canvas.drive-canvas, .showroom.is-handoff .showroom-canvas {
     .drive-jumps a span { display: none; }
     .drive-progress { bottom: 8px; }
     .drive-narrative { padding: 0 7%; }
-    .drive-step { min-height: 62svh; padding: 45px 0; opacity: .7; transform: none; border-bottom: 1px solid var(--drive-line); scroll-margin-top: calc(var(--navbar-height) + 44svh); }
+    .drive-step { min-height: 62svh; padding: 45px 0; opacity: .7; transform: none; border-bottom: 1px solid var(--drive-line); scroll-margin-top: 44svh; }
     .drive-step h3 { font-size: clamp(1.4rem, 5.1vw, 1.85rem); line-height: 1.75; }
     .drive-step p { margin-bottom: 18px; }
     .drive-stats { gap: 12px; padding-block: 20px; }
