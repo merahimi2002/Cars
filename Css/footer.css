@@ -116,6 +116,11 @@ html[data-mode="dark"] .site-footer {
 html[data-mode="dark"] .site-footer::after { opacity: .65; background-image: linear-gradient(to bottom, var(--scene-surface), #11171e20 24%, #11171e40 80%, #11171e80), url('../assets/footer-twilight-parking.webp'); }
 .footer-showcase { position: absolute; inset: 0; pointer-events: none; }
 .footer-car-slot { position: absolute; inset: 0; }
+/* Share the travelling canvas stack so glass stays above it without moving the
+   live WebGL element into/out of the footer at the transition boundary. */
+.site-footer.has-live-car { isolation: auto; }
+.site-footer.has-live-car::after { z-index: 0; }
+.site-footer.has-live-car::before { z-index: 1; }
 .footer-horizon { display: none; }
 .footer-shell { position: relative; z-index: 6; margin-inline: auto; padding-inline: clamp(20px, 3vw, 42px); border: 1px solid var(--footer-line); border-radius: 26px; background: color-mix(in srgb, var(--scene-surface) 55%, transparent); backdrop-filter: blur(56px) saturate(125%); -webkit-backdrop-filter: blur(56px) saturate(125%); box-shadow: inset 0 1px #ffffff38, 0 -18px 80px #0000000a; }
 .footer-invitation { padding-top: clamp(28px, 4vw, 50px); }

@@ -6,6 +6,9 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
     const canvas = section.querySelector('canvas');
     const footer = document.querySelector('.site-footer');
     const footerSlot = footer?.querySelector('.footer-car-slot');
+    // The travelling WebGL canvas stays in one compositing layer. The footer
+    // glass participates in that same stack, above the car, without reparenting it.
+    if (footerSlot) footer.classList.add('has-live-car');
     let footerTravel = 0, displayedFooterTravel = 0;
     const steps = [...section.querySelectorAll('.drive-step')];
     const jumps = [...section.querySelectorAll('[data-drive-jump]')];
@@ -273,7 +276,6 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
             camera.lookAt(look); camera.updateMatrixWorld(true); camera.updateProjectionMatrix();
             const endAnchor = new THREE.Vector3(0, .65, 0).project(camera);
             const footerActive = !!footerSlot && displayedFooterTravel > .0001 && displayedHandoff >= .999;
-            if (!footerActive && travelling && canvas.parentElement === footer) document.body.append(canvas, edgeBlur);
             canvas.classList.toggle('is-footer-background', footerActive);
             edgeBlur.classList.toggle('is-footer-background', footerActive);
             const transferring = heroFrame && displayedHandoff > 0 && displayedHandoff < 1 && !reduced.matches;
@@ -321,6 +323,10 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
             if (footerSlot && displayedFooterTravel > 0 && displayedHandoff >= .999) {
                 const blend = reduced.matches ? 1 : ease(displayedFooterTravel);
                 const from = anchor.getBoundingClientRect(), to = footerSlot.getBoundingClientRect();
+                // Preserve the source's projected centre before changing aspect.
+                const hub = new THREE.Vector3(0, .65, 0);
+                camera.updateProjectionMatrix(); camera.lookAt(look); camera.updateMatrixWorld(true);
+                const sourceAnchor = hub.clone().project(camera);
                 if (!travelling) {
                     document.body.append(canvas, edgeBlur);
                     canvas.classList.add('drive-canvas-travelling'); edgeBlur.classList.add('is-travelling'); travelling = true;
@@ -330,8 +336,6 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
                     rect[key] = THREE.MathUtils.lerp(from[key], to[key], blend);
                     canvas.style[key] = edgeBlur.style[key] = rect[key] + 'px';
                 }
-                // Keep the live render inside the footer stacking context, beneath its glass.
-                if (canvas.parentElement !== footer) footer.append(canvas, edgeBlur);
                 canvas.style.opacity = '1'; edgeBlur.style.opacity = '1';
                 renderer.setSize(Math.max(1, Math.round(rect.width)), Math.max(1, Math.round(rect.height)), false);
                 camera.aspect = rect.width / rect.height;
@@ -349,7 +353,21 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
                 const height = THREE.MathUtils.lerp(startOffset.y, endOffset.y, blend);
                 look.lerp(footerLook, blend);
                 camera.position.set(Math.sin(angle) * radius, height, Math.cos(angle) * radius).add(look);
-                camera.clearViewOffset();
+                // Interpolate projected scale, rather than independently growing
+                // the canvas and moving the camera (which produces a zoom lurch).
+                const distancePerPixel = THREE.MathUtils.lerp(startOffset.length() / from.height, endOffset.length() / to.height, blend);
+                camera.position.sub(look).setLength(distancePerPixel * rect.height).add(look);
+                camera.clearViewOffset(); camera.lookAt(look);
+                camera.updateProjectionMatrix(); camera.updateMatrixWorld(true);
+                const projected = hub.project(camera);
+                const sourceX = from.left + (sourceAnchor.x + 1) * .5 * from.width;
+                const sourceY = from.top + (1 - sourceAnchor.y) * .5 * from.height;
+                const desiredX = THREE.MathUtils.lerp(sourceX, to.left + to.width / 2, blend);
+                const desiredY = THREE.MathUtils.lerp(sourceY, to.top + to.height / 2, blend);
+                camera.setViewOffset(rect.width, rect.height,
+                    (projected.x + 1) * .5 * rect.width - (desiredX - rect.left),
+                    (1 - projected.y) * .5 * rect.height - (desiredY - rect.top),
+                    rect.width, rect.height);
             }
             camera.updateProjectionMatrix(); camera.lookAt(look);
             renderer.shadowMap.needsUpdate = true;
