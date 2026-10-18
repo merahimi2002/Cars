@@ -14,5 +14,15 @@ export const paintPalettes = {
         ['Toronto Red', '#c83932'], ['Sao Paulo Yellow', '#d2d535'],
         ['Isle of Man Green', '#176359'], ['Portimao Blue', '#255799'],
         ['Alpine White', '#ecece6'], ['Black Sapphire', '#1a1f27']
+    ],
+    porsche: [
+        ['GT Silver Metallic', '#a8abae'], ['Guards Red', '#bd2029'],
+        ['Racing Yellow', '#eec51d'], ['White', '#eeeae4'],
+        ['Black', '#15171a'], ['Sapphire Blue Metallic', '#2555a0']
+    ],
+    nissan: [
+        ['Bayside Blue', '#2355ac'], ['Midnight Purple III', '#463954'],
+        ['Pearl White', '#e9e8e0'], ['Sparkling Silver', '#a6adb5'],
+        ['Black Pearl', '#171e25'], ['Millennium Jade', '#8d987e']
     ]
 };

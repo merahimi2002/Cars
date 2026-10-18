@@ -867,3 +867,11 @@ html[data-mode="dark"] .environment-picker button[aria-pressed="true"] { backgro
         transform: none;
     }
 }
+/* Five models stay in one compact, horizontally scrollable mobile picker. */
+.showroom-car-picker { max-width: 92%; }
+@media(max-width:767px) {
+    .showroom-car-picker { max-width: 100%; min-width: 0; justify-content: flex-start; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
+    .showroom-car-picker button { flex: 0 0 auto; padding: 9px 12px; }
+}
+.showroom-car-picker::-webkit-scrollbar { display: none; }
+@media(min-width:992px) and (max-width:1399px) { .showroom-subtitle { max-width: calc((100% - 760px) / 2); flex-wrap: wrap; align-content: center; } }

@@ -1,6 +1,6 @@
 # آذرخش
 
-سایت استاتیک با نمایش سه‌بعدی سه خودرو: Lamborghini Huracán Spyder، Ferrari 458 Italia و BMW M4 Competition.
+سایت استاتیک با نمایش سه‌بعدی پنج خودرو: Lamborghini Huracán Spyder، Ferrari 458 Italia، BMW M4 Competition، Porsche 911 Carrera 4S و Nissan Skyline GT-R R34.
 
 ## اجرا و GitHub Pages
 

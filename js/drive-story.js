@@ -67,6 +67,11 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
         section.querySelector('[data-drive-word]').textContent = data.short;
         section.querySelector('[data-drive-edition]').textContent = data.edition;
         section.querySelector('[data-drive-engine]').textContent = data.engine;
+        const labels = data.statLabels || [['قدرت موتور', 'اسب‌بخار متریک'], ['صفر تا صد', 'ثانیه'], ['حداکثر سرعت', 'کیلومتر بر ساعت']];
+        section.querySelectorAll('.drive-stats > div').forEach((item, i) => {
+            item.querySelector('dt').textContent = labels[i][0];
+            item.querySelector('dd > span').textContent = labels[i][1];
+        });
         for (const field of ['lead', 'wheel', 'lights', 'cabin', 'note']) section.querySelector('[data-drive-' + field + ']').textContent = data[field];
         section.querySelectorAll('[data-drive-stat]').forEach((node, i) => { node.setAttribute('aria-label', format(data.stats[i])); });
         canvas.setAttribute('aria-label', 'جزئیات سه‌بعدی ' + data.name);

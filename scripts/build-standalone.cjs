@@ -14,7 +14,7 @@ function writeIfChanged(filename, content) {
         bundle: true, format: 'iife', target: 'es2020', minify: true,
         legalComments: 'eof'
     });
-    for (const [id, filename] of Object.entries({ huracan: 'huracan.glb', ferrari: 'ferrari-458.glb', bmw: 'bmw-m4.glb' })) {
+    for (const [id, filename] of Object.entries({ huracan: 'huracan.glb', ferrari: 'ferrari-458.glb', bmw: 'bmw-m4.glb', porsche: 'porsche-911.glb', nissan: 'nissan-r34.glb' })) {
         const base64 = fs.readFileSync(path.join(root, 'assets/models', filename)).toString('base64');
         const output = 'window.CarsLocalAssets=window.CarsLocalAssets||{models:{}};window.CarsLocalAssets.models[' + JSON.stringify(id) + ']=' + JSON.stringify(base64) + ';\n';
         writeIfChanged(path.join(root, 'assets/models', id + '.local.js'), output);
@@ -24,5 +24,5 @@ function writeIfChanged(filename, content) {
         wasm: fs.readFileSync(path.join(root, 'js/vendor/draco/draco_decoder.wasm')).toString('base64')
     };
     writeIfChanged(path.join(root, 'js/vendor/draco/local-decoder.js'), 'window.CarsLocalDecoder=' + JSON.stringify(decoder) + ';\n');
-    console.log('Built classic showroom bundle, three local model scripts, and embedded Draco decoder.');
+    console.log('Built classic showroom bundle, five local model scripts, and embedded Draco decoder.');
 })().catch(error => { console.error(error); process.exitCode = 1; });

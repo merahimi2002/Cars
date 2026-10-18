@@ -9,7 +9,7 @@ export function rigWheels(THREE, model, paint, modelId) {
     model.traverse(mesh => {
         if (!mesh.isMesh || !mesh.visible) return;
         meshes.push(mesh);
-        if (!mesh.userData.wheelSurface) return;
+        if (!mesh.userData.wheelSurface || mesh.userData.wheelSample === false) return;
         const positions = mesh.geometry.attributes.position;
         for (let i = 0; i < positions.count; i++) {
             point.fromBufferAttribute(positions, i).applyMatrix4(mesh.matrixWorld);
@@ -23,12 +23,21 @@ export function rigWheels(THREE, model, paint, modelId) {
     const wheels = samples.map(points => {
         // Some exporters share rim material with isolated trim/steering pieces.
         // Medians keep those outliers from shifting the axle away from the hub.
-        const center = new THREE.Vector3(...['x', 'y', 'z'].map(axis => median(points.map(point => point[axis]))));
-        const radius = Math.max(center.y, .15);
+        // The Porsche export has its front wheels steered 20 degrees. Keep that
+        // steering on a parent so rolling uses the wheel's own axle, not world X.
+        const steering = modelId === 'porsche' && points[0].z > 0 ? -Math.PI / 9 : 0;
+        const axleFrame = new THREE.Matrix4().makeRotationY(-steering);
+        const tireBounds = new THREE.Box3().setFromPoints(points.map(point => point.clone().applyMatrix4(axleFrame)));
+        const tireSamples = modelId === 'porsche' || modelId === 'nissan';
+        const center = tireSamples ? tireBounds.getCenter(new THREE.Vector3()).applyAxisAngle(new THREE.Vector3(0, 1, 0), steering) : new THREE.Vector3(...['x', 'y', 'z'].map(axis => median(points.map(point => point[axis]))));
+        const radius = tireSamples ? Math.max((tireBounds.max.y - tireBounds.min.y) / 2, .15) : Math.max(center.y, .15);
         const pivot = new THREE.Group();
-        pivot.position.copy(center);
-        display.add(pivot);
-        return { pivot, radius, center, width: .5 };
+        const axle = new THREE.Group();
+        axle.position.copy(center);
+        axle.rotation.y = steering;
+        axle.add(pivot);
+        display.add(axle);
+        return { pivot, radius, center, steering, width: .5 };
     });
 
     function subset(source, faces) {
@@ -67,7 +76,12 @@ export function rigWheels(THREE, model, paint, modelId) {
             const a = geometry.index ? geometry.index.getX(i) : i;
             const b = geometry.index ? geometry.index.getX(i + 1) : i + 1;
             const c = geometry.index ? geometry.index.getX(i + 2) : i + 2;
-            const wheel = wheels.findIndex(({ center, radius, width }) => [a, b, c].every(vertex =>
+            // These Porsche meshes contain only paired wheel surfaces. Splitting
+            // by side/axle keeps the steered tire complete instead of leaving
+            // stationary fragments outside a world-aligned cylinder.
+            const wheel = modelId === 'porsche'
+                ? (world[a * 3] > 0 ? 2 : 0) + (world[a * 3 + 2] > 0 ? 1 : 0)
+                : wheels.findIndex(({ center, radius, width }) => [a, b, c].every(vertex =>
                 Math.abs(world[vertex * 3] - center.x) < width / 2 &&
                 (world[vertex * 3 + 1] - center.y) ** 2 + (world[vertex * 3 + 2] - center.z) ** 2 < (radius * 1.04) ** 2));
             buckets[wheel + 1].push(a, b, c);
@@ -75,11 +89,12 @@ export function rigWheels(THREE, model, paint, modelId) {
         if (buckets.slice(1).every(bucket => bucket.length === 0)) continue;
         if (buckets[0].length) mesh.geometry = subset(geometry, buckets[0]);
         else mesh.visible = false;
-        wheels.forEach(({ pivot, center }, i) => {
+        wheels.forEach(({ pivot, center, steering }, i) => {
             if (!buckets[i + 1].length) return;
             const part = subset(geometry, buckets[i + 1]);
             part.applyMatrix4(mesh.matrixWorld);
             part.translate(-center.x, -center.y, -center.z);
+            if (steering) part.rotateY(-steering);
             const surface = new THREE.Mesh(part, mesh.material);
             surface.castShadow = surface.receiveShadow = true;
             pivot.add(surface);

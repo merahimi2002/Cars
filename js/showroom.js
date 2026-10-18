@@ -22,7 +22,9 @@ const interactiveButtons = [...paintButtons, customPaint, ...viewButtons, rotate
 const cars = {
     huracan: { file: 'huracan.glb', title: 'HURACÁN', label: '01 — HURACÁN SPYDER', name: 'لامبورگینی هوراکان اسپایدر', rotation: Math.PI / 2 },
     ferrari: { file: 'ferrari-458.glb', title: '458 ITALIA', label: '02 — FERRARI 458 ITALIA', name: 'فراری 458 ایتالیا', rotation: Math.PI },
-    bmw: { file: 'bmw-m4.glb', title: 'BMW M4', label: '03 — BMW M4 COMPETITION', name: 'بی‌ام‌و M4 کامپتیشن', rotation: 0 }
+    bmw: { file: 'bmw-m4.glb', title: 'BMW M4', label: '03 — BMW M4 COMPETITION', name: 'بی‌ام‌و M4 کامپتیشن', rotation: 0 },
+    porsche: { file: 'porsche-911.glb', title: '911 CARRERA', label: '04 — PORSCHE 911 CARRERA 4S', name: 'پورشه ۹۱۱ کاررا 4S', rotation: 0 },
+    nissan: { file: 'nissan-r34.glb', title: 'SKYLINE GT-R', label: '05 — NISSAN SKYLINE R34', name: 'نیسان اسکای‌لاین GT-R R34', rotation: 0 }
 };
 
 // Classic scripts work under file://; no fetch or ES-module requests are made there.
@@ -56,12 +58,13 @@ function showError(error) {
 document.getElementById('showroom-retry').addEventListener('click', () => location.reload());
 
 async function initShowroom() {
-    const [THREE, { OrbitControls }, { GLTFLoader }, { RoomEnvironment }, { DRACOLoader }] = await Promise.all([
+    const [THREE, { OrbitControls }, { GLTFLoader }, { RoomEnvironment }, { DRACOLoader }, { MeshoptDecoder }] = await Promise.all([
         import('./vendor/three.module.js'),
         import('./vendor/OrbitControls.js'),
         import('./vendor/GLTFLoader.js'),
         import('./vendor/RoomEnvironment.js'),
-        import('./vendor/DRACOLoader.js')
+        import('./vendor/DRACOLoader.js'),
+        import('./vendor/meshopt_decoder.module.js')
     ]);
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
     renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
@@ -191,6 +194,7 @@ async function initShowroom() {
             ? decodeLocalBase64(window.CarsLocalDecoder.wasm) : window.CarsLocalDecoder.js);
     }
     loader.setDRACOLoader(draco);
+    loader.setMeshoptDecoder(MeshoptDecoder);
     const modelCache = new Map();
     let driveStory = null;
     let currentCar = 'huracan';
@@ -220,11 +224,22 @@ async function initShowroom() {
             if (!child.isMesh) return;
             const materials = Array.isArray(child.material) ? child.material : [child.material];
             child.userData.wheelSurface = materials.some(material => /cerchi|rim/i.test(material.name)) || /^rim_/.test(child.name);
+            if (id === 'porsche') {
+                // The source includes a baked floor and duplicate clearcoat shells.
+                if (child.name === 'Plane_0' || materials.some(m => m.name === 'coat')) child.visible = false;
+                child.userData.wheelSurface = /^Cylinder/.test(child.name) && materials.some(m => /^(silver|plastic|rubber)$/.test(m.name));
+                child.userData.wheelSample = materials.some(m => m.name === 'rubber');
+            } else if (id === 'nissan') {
+                child.userData.wheelSurface = materials.some(m => /^(Material\.010|Material\.012)$/.test(m.name));
+                child.userData.wheelSample = materials.some(m => m.name === 'Material.010');
+            }
             child.castShadow = true;
             child.receiveShadow = true;
             const convert = material => {
                 const body = id === 'huracan' ? material.name === 'scocca'
                     : id === 'ferrari' ? child.name === 'body'
+                    : id === 'porsche' ? material.name === 'paint'
+                    : id === 'nissan' ? material.name === 'Material.001'
                     : /paint|body|carros|kaross|livery|^Meshes(?:zx1|ff41)Mtl$/i.test(material.name);
                 if (body) { paintMeshes++; return paint; }
                 if (material.name === 'vetro' || child.name === 'glass') return new THREE.MeshPhysicalMaterial({ color: 0x202b38, metalness: .1, roughness: .06, transparent: true, opacity: .55, side: THREE.DoubleSide });
@@ -250,7 +265,12 @@ async function initShowroom() {
                 model.rotation.y = -Math.atan2(front.x, front.z);
             } else model.rotation.y = config.rotation;
         } else model.rotation.y = config.rotation;
-        const bounds = new THREE.Box3().setFromObject(model);
+        // Remove hidden source-only geometry before computing the display bounds.
+        const hidden = []; model.traverse(node => { if (node.isMesh && !node.visible) hidden.push(node); });
+        hidden.forEach(node => node.removeFromParent());
+        // Compressed exports can have rotated local bounds larger than the body.
+        // Measure their vertices so the car stays centered at the intended size.
+        const bounds = new THREE.Box3().setFromObject(model, id === 'porsche' || id === 'nissan');
         const size = bounds.getSize(new THREE.Vector3());
         const scale = 5.8 / Math.max(size.x, size.z);
         const center = bounds.getCenter(new THREE.Vector3());
@@ -337,7 +357,17 @@ async function initShowroom() {
         interactiveButtons.forEach(button => { button.disabled = true; });
         wake();
     }
+    function keepSelectedCarVisible() {
+        const picker = hero.querySelector('.showroom-car-picker');
+        const selected = picker.querySelector('[aria-pressed="true"]');
+        if (!selected || picker.scrollWidth <= picker.clientWidth) return;
+        const box = picker.getBoundingClientRect();
+        const button = selected.getBoundingClientRect();
+        if (button.left < box.left + 5) picker.scrollLeft += button.left - box.left - 5;
+        else if (button.right > box.right - 5) picker.scrollLeft += button.right - box.right + 5;
+    }
     function resize() {
+        keepSelectedCarVisible();
         const width = canvas.clientWidth;
         const height = canvas.clientHeight;
         if (!width || !height) return;
@@ -427,6 +457,7 @@ async function initShowroom() {
             document.getElementById('showroom-title').textContent = cars[id].title;
             canvas.setAttribute('aria-label', 'نمای سه‌بعدی ' + cars[id].name + '؛ برای چرخش بکشید یا از کلیدهای جهت‌نما استفاده کنید');
             carButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.car === id)));
+            keepSelectedCarVisible();
             document.getElementById('showroom-hint-text').textContent = 'برای دیدن از هر زاویه، خودرو را بچرخان';
             replay();
         } catch (error) {
