@@ -13,7 +13,7 @@ window.CarsPerf = {
             const start = performance.now();
             if (current && renderer.shadowMap.enabled && (renderer.shadowMap.autoUpdate || renderer.shadowMap.needsUpdate)) current.shadowUpdates++;
             const result = render(...args);
-            if (current) { current.renders++; current.renderCpuMs += performance.now() - start; current[name]++; }
+            if (current) { current.renders++; current.renderCpuMs += performance.now() - start; current[name]++; current.drawCalls += renderer.info.render.calls; current.triangles += renderer.info.render.triangles; }
             return result;
         };
     }
@@ -27,7 +27,7 @@ async function waitFor(test) {
 }
 async function phase(name, work) {
     const intervals = [];
-    const stats = { name, renders: 0, hero: 0, story: 0, shadowUpdates: 0, resizeCalls: 0, layoutReads: 0, renderCpuMs: 0 };
+    const stats = { name, renders: 0, hero: 0, story: 0, shadowUpdates: 0, resizeCalls: 0, layoutReads: 0, renderCpuMs: 0, drawCalls: 0, triangles: 0 };
     let previous = 0, running = true;
     function sample(t) { if (!running) return; if (previous) intervals.push(t - previous); previous = t; requestAnimationFrame(sample); }
     current = stats; output.textContent = 'Running: ' + name; requestAnimationFrame(sample);
@@ -36,6 +36,8 @@ async function phase(name, work) {
     intervals.sort((a, b) => a - b);
     stats.frameP50Ms = +(intervals[Math.floor(intervals.length * .5)] || 0).toFixed(2);
     stats.frameP95Ms = +(intervals[Math.floor(intervals.length * .95)] || 0).toFixed(2);
+    stats.fps = +(intervals.length * 1000 / intervals.reduce((a, b) => a + b, 0)).toFixed(1);
+    stats.framesOver25Ms = intervals.filter(ms => ms > 25).length;
     stats.renderCpuMs = +stats.renderCpuMs.toFixed(2);
     results.push(stats);
 }
@@ -53,7 +55,8 @@ async function sweep(from, to, duration = 1800) {
 async function smoke() {
     const checks = [];
     const assert = (ok, message) => { if (!ok) throw new Error(message); };
-    for (const id of ['porsche', 'nissan']) {
+    const models = new URLSearchParams(location.search).has('all') ? ['huracan', 'ferrari', 'bmw', 'porsche', 'nissan'] : ['porsche', 'nissan'];
+    for (const id of models) {
         output.textContent = 'Checking features: ' + id;
         await waitFor(() => {
             scrollTo({ top: 0, behavior: 'instant' });
@@ -89,11 +92,32 @@ async function smoke() {
 }
 (async () => {
 try {
+    if (new URLSearchParams(location.search).get('perf') === 'visual') {
+        const query = new URLSearchParams(location.search);
+        await waitFor(() => { scrollTo({ top: 0, behavior: 'instant' }); return document.querySelector('button[data-car="nissan"]')?.disabled === false; });
+        const model = query.get('model') || 'nissan';
+        document.querySelector('button[data-car="' + model + '"]').click();
+        await waitFor(() => document.querySelector('#showroom').dataset.car === model && !document.querySelector('button[data-car="' + model + '"]').disabled);
+        document.querySelector('button[data-environment="' + (query.get('environment') || 'city') + '"]').click();
+        await sleep(1600);
+        output.hidden = true;
+        output.textContent = JSON.stringify({ complete: true, mode: 'visual', model, viewport: [innerWidth, innerHeight] });
+        return;
+    }
     if (new URLSearchParams(location.search).get('perf') === 'smoke') { await smoke(); return; }
+    const fpsTest = new URLSearchParams(location.search).get('perf') === 'fps';
     await waitFor(() => { scrollTo({ top: 0, behavior: 'instant' }); return document.querySelector('button[data-car="nissan"]')?.disabled === false; });
     document.querySelector('button[data-car="nissan"]').click();
     await waitFor(() => document.querySelector('#showroom').dataset.car === 'nissan' && !document.querySelector('button[data-car="nissan"]').disabled);
     await sleep(2000);
+    if (fpsTest) {
+        for (const environment of ['desert', 'city', 'coast']) {
+            document.querySelector('button[data-environment="' + environment + '"]').click(); await sleep(1500);
+            document.querySelector('#showroom-rotate').click();
+            await phase('orbit-' + environment, () => sleep(4000));
+            document.querySelector('#showroom-rotate').click(); await sleep(300);
+        }
+    }
     await phase('paint-settle', async () => { document.querySelectorAll('.paint-button')[1].click(); await sleep(3500); });
     await phase('hero-idle', () => sleep(2000));
     const y = selector => document.querySelector(selector).getBoundingClientRect().top + scrollY;

@@ -3,6 +3,7 @@ import { createLandscape } from './landscape.js';
 import { paintPalettes } from './paint-palettes.js';
 import { transitionEnvironment } from './environment-transition.js';
 import { createDriveStory } from './drive-story.js';
+import { cacheLocalTransforms } from './render-efficiency.js';
 
 const hero = document.getElementById('showroom');
 const canvas = hero.querySelector('canvas');
@@ -281,6 +282,7 @@ async function initShowroom() {
         model.position.set(-center.x * scale, -bounds.min.y * scale, -center.z * scale);
         const rig = rigWheels(THREE, model, paint, id);
         rig.object.userData.wheels = rig.wheels;
+        cacheLocalTransforms(rig.object, new Set([rig.object, ...rig.wheels.map(wheel => wheel.pivot)]));
         modelCache.set(id, rig.object);
         return rig.object;
     }

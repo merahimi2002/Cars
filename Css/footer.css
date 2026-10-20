@@ -122,7 +122,7 @@ html[data-mode="dark"] .site-footer::after { opacity: .65; background-image: lin
 .site-footer.has-live-car::after { z-index: 0; }
 .site-footer.has-live-car::before { z-index: 1; }
 .footer-horizon { display: none; }
-.footer-shell { position: relative; z-index: 6; margin-inline: auto; padding-inline: clamp(20px, 3vw, 42px); border: 1px solid var(--footer-line); border-radius: 26px; background: color-mix(in srgb, var(--scene-surface) 55%, transparent); backdrop-filter: blur(56px) saturate(125%); -webkit-backdrop-filter: blur(56px) saturate(125%); box-shadow: inset 0 1px #ffffff38, 0 -18px 80px #0000000a; }
+.footer-shell { position: relative; z-index: 6; margin-inline: auto; padding-inline: clamp(20px, 3vw, 42px); border: 1px solid var(--footer-line); border-radius: 26px; background: color-mix(in srgb, var(--scene-surface) 55%, transparent); backdrop-filter: blur(25px) saturate(125%); -webkit-backdrop-filter: blur(25px) saturate(125%); box-shadow: inset 0 1px #ffffff38, 0 -18px 80px #0000000a; }
 .footer-invitation { padding-top: clamp(28px, 4vw, 50px); }
 .footer-bottom small { line-height: 2; }
 .site-footer .footer-designer { color: var(--footer-ink); display: inline; font: inherit; border-bottom: 1px solid color-mix(in srgb, var(--footer-paint) 70%, var(--footer-ink)); transition: color .25s; }
@@ -130,4 +130,4 @@ html[data-mode="dark"] .site-footer::after { opacity: .65; background-image: lin
 /* Remove both the feather and edge-only blur only on the footer journey. */
 canvas.drive-canvas.is-footer-background { mask-image: none; -webkit-mask-image: none; }
 .drive-edge-blur.is-footer-background { display: none; }
-@media(max-width:767px) { .site-footer { padding-block: 56px; } .footer-shell { width: 92%; border-radius: 20px; padding-inline: 20px; background: color-mix(in srgb, var(--scene-surface) 62%, transparent); backdrop-filter: blur(60px) saturate(125%); -webkit-backdrop-filter: blur(60px) saturate(125%); } }
+@media(max-width:767px) { .site-footer { padding-block: 56px; } .footer-shell { width: 92%; border-radius: 20px; padding-inline: 20px; background: color-mix(in srgb, var(--scene-surface) 62%, transparent); backdrop-filter: blur(25px) saturate(125%); -webkit-backdrop-filter: blur(25px) saturate(125%); } }

@@ -1,5 +1,7 @@
+import { batchStaticScenery, cacheLocalTransforms } from './render-efficiency.js';
+
 // Lightweight scenery built locally, shared by the module and standalone builds.
-export function createEnvironment(THREE, id) {
+export function createEnvironment(THREE, id, optimize = true) {
     const group = new THREE.Group();
     let seed = id === 'city' ? 923 : 124;
     const random = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
@@ -96,11 +98,11 @@ export function createEnvironment(THREE, id) {
             }
         }
         const joints = new THREE.LineBasicMaterial({ color: 0x777d7c, transparent: true, opacity: .25 });
+        const jointPoints = [];
         for (const side of [-1, 1]) for (let z = -95; z < 15; z += 2) {
-            group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([
-                new THREE.Vector3(side * 6.2, -.02, z), new THREE.Vector3(side * 9.9, -.02, z)
-            ]), joints));
+            jointPoints.push(new THREE.Vector3(side * 6.2, -.02, z), new THREE.Vector3(side * 9.9, -.02, z));
         }
+        group.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(jointPoints), joints));
         const lampMaterial = new THREE.MeshStandardMaterial({ color: 0xf1e5ca, emissive: 0xffdc9b, emissiveIntensity: .8 });
         for (const side of [-1, 1]) for (let z = -10; z > -75; z -= 14) {
             const pole = new THREE.Mesh(new THREE.CylinderGeometry(.035, .055, 3.8, 6), poleMaterial);
@@ -111,6 +113,7 @@ export function createEnvironment(THREE, id) {
             lamp.position.set(side * 8.15, 3.75, z);
             group.add(pole, arm, lamp);
         }
+        if (optimize) { batchStaticScenery(THREE, group); cacheLocalTransforms(group); }
         return { group, setTheme(dark) {
             floor.color.set(dark ? 0x343e49 : 0x929da4);
             sidewalk.color.set(dark ? 0x56616b : 0xb6bdc0);
@@ -199,6 +202,7 @@ export function createEnvironment(THREE, id) {
         palm.rotation.y = random() * Math.PI;
         group.add(palm);
     }
+    if (optimize) { batchStaticScenery(THREE, group); cacheLocalTransforms(group); }
     return { group, setTheme(dark) {
         floor.color.set(dark ? 0x6a7167 : 0xc8b58a);
         seaMaterial.color.set(dark ? 0x668696 : 0xffffff);

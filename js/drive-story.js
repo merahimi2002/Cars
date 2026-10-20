@@ -80,6 +80,7 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
         const copy = source.isMesh ? new THREE.Mesh(source.geometry, source.material) : new THREE.Group();
         clonedNodes.set(source, copy);
         copy.position.copy(source.position); copy.quaternion.copy(source.quaternion); copy.scale.copy(source.scale);
+        copy.updateMatrix(); copy.matrixAutoUpdate = source.matrixAutoUpdate;
         copy.visible = source.visible;
         for (const child of source.children) copy.add(cloneVisual(child));
         return copy;
