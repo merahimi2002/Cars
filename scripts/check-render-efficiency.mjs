@@ -1,56 +1,10 @@
 import assert from 'node:assert/strict';
 import * as THREE from '../js/vendor/three.module.js';
-import { createEnvironment } from '../js/environments.js';
-import { batchStaticScenery, cacheLocalTransforms } from '../js/render-efficiency.js';
+import { cacheLocalTransforms } from '../js/render-efficiency.js';
 import fs from 'node:fs';
 import { GLTFLoader } from '../js/vendor/GLTFLoader.js';
 import { MeshoptDecoder } from '../js/vendor/meshopt_decoder.module.js';
 import { rigWheels } from '../js/wheel-rig.js';
-
-globalThis.document = { createElement: () => ({ getContext: () => ({
-    createImageData: (w, h) => ({ data: new Uint8ClampedArray(w * h * 4) }),
-    putImageData() {}, fillRect() {}, createLinearGradient: () => ({ addColorStop() {} })
-}) }) };
-
-function snapshot(root) {
-    root.updateMatrixWorld(true);
-    const triangles = new Map(); let meshes = 0;
-    root.traverse(mesh => {
-        if (!mesh.isMesh) return;
-        meshes++;
-        const geometry = mesh.geometry.index ? mesh.geometry.toNonIndexed() : mesh.geometry.clone();
-        geometry.applyMatrix4(mesh.matrixWorld);
-        const names = Object.keys(geometry.attributes).sort();
-        const vertices = [];
-        for (let i = 0; i < geometry.attributes.position.count; i++) {
-            const values = [];
-            for (const name of names) {
-                const a = geometry.attributes[name];
-                for (let j = 0; j < a.itemSize; j++) values.push(Math.round(a.getComponent(i, j) * 1000));
-            }
-            vertices.push(values.join(','));
-        }
-        for (let i = 0; i < vertices.length; i += 3) {
-            // Keep winding and material, permit cyclic rotation of triangle corners.
-            const corners = vertices.slice(i, i + 3);
-            const rotations = corners.map((_, j) => [...corners.slice(j), ...corners.slice(0, j)].join('/')).sort();
-            const key = mesh.material.uuid + ':' + rotations[0];
-            triangles.set(key, (triangles.get(key) || 0) + 1);
-        }
-        geometry.dispose();
-    });
-    return { triangles, meshes };
-}
-for (const id of ['city', 'coast']) {
-    const { group, setTheme } = createEnvironment(THREE, id, false);
-    const before = snapshot(group);
-    batchStaticScenery(THREE, group);
-    const after = snapshot(group);
-    assert.deepEqual(after.triangles, before.triangles, id + ': geometry/material/normal/UV changed');
-    assert(after.meshes < before.meshes);
-    setTheme(true); setTheme(false);
-    console.log(`${id}: ${before.meshes} -> ${after.meshes} meshes; all triangle attributes and materials retained (1e-3 comparison grid).`);
-}
 
 const root = new THREE.Group(), fixed = new THREE.Group(), wheel = new THREE.Group();
 root.add(fixed); fixed.add(wheel); wheel.add(new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshBasicMaterial()));

@@ -1,7 +1,6 @@
 import { rigWheels } from './wheel-rig.js';
 import { createLandscape } from './landscape.js';
 import { paintPalettes } from './paint-palettes.js';
-import { transitionEnvironment } from './environment-transition.js';
 import { createDriveStory } from './drive-story.js';
 import { cacheLocalTransforms } from './render-efficiency.js';
 
@@ -13,13 +12,11 @@ const errorPanel = hero.querySelector('.showroom-error');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const paintButtons = [...hero.querySelectorAll('[data-paint]')];
 const customPaint = document.getElementById('showroom-custom-paint');
-const environmentButtons = [...hero.querySelectorAll('[data-environment]')];
-let currentEnvironment = 'desert';
 const viewButtons = [...hero.querySelectorAll('[data-view]')];
 const rotateButton = document.getElementById('showroom-rotate');
 const replayButton = document.getElementById('showroom-replay');
 const carButtons = [...hero.querySelectorAll('[data-car]')];
-const interactiveButtons = [...paintButtons, customPaint, ...viewButtons, rotateButton, replayButton, ...carButtons, ...environmentButtons];
+const interactiveButtons = [...paintButtons, customPaint, ...viewButtons, rotateButton, replayButton, ...carButtons];
 const cars = {
     huracan: { file: 'huracan.glb', title: 'HURACÁN', label: '01 — HURACÁN SPYDER', name: 'لامبورگینی هوراکان اسپایدر', rotation: Math.PI / 2 },
     ferrari: { file: 'ferrari-458.glb', title: '458 ITALIA', label: '02 — FERRARI 458 ITALIA', name: 'فراری 458 ایتالیا', rotation: Math.PI },
@@ -151,8 +148,9 @@ async function initShowroom() {
     const asphalt = new THREE.CanvasTexture(asphaltCanvas);
     asphalt.colorSpace = THREE.SRGBColorSpace;
     asphalt.wrapS = asphalt.wrapT = THREE.RepeatWrapping;
-    asphalt.repeat.set(1, 28);
+    asphalt.repeat.set(2, 28);
     asphalt.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    landscape.setAsphalt(asphalt);
     const shoulderCanvas = document.createElement('canvas');
     shoulderCanvas.width = 512;
     shoulderCanvas.height = 128;
@@ -163,24 +161,28 @@ async function initShowroom() {
     shoulderContext.fillRect(0, 0, 512, 128);
     const shoulders = new THREE.CanvasTexture(shoulderCanvas);
     const roadMaterial = new THREE.MeshStandardMaterial({ map: asphalt, alphaMap: shoulders, transparent: true, depthWrite: false, bumpMap: asphalt, bumpScale: .018, roughness: .96, metalness: 0, color: 0xc1c8ce });
-    const road = new THREE.Mesh(new THREE.PlaneGeometry(15, 110), roadMaterial);
+    const road = new THREE.Mesh(new THREE.PlaneGeometry(24, 110), roadMaterial);
     road.rotation.x = -Math.PI / 2;
     road.position.set(0, -.04, -22);
     ground.renderOrder = -3;
     road.renderOrder = -2;
     shadow.renderOrder = -1;
     scene.add(road);
-    const laneMaterial = new THREE.MeshStandardMaterial({ color: 0xe9e5d8, roughness: .95, transparent: true, opacity: .82 });
-    function marking(x, z, length, width = .11) {
-        const lane = new THREE.Mesh(new THREE.PlaneGeometry(width, length), laneMaterial);
-        lane.rotation.x = -Math.PI / 2;
-        lane.position.set(x, -.015, z);
-        scene.add(lane);
+    const laneMaterial = new THREE.MeshStandardMaterial({ color: 0xf3f1e7, roughness: .95, transparent: true, opacity: .94 });
+    const markingVertices = [];
+    function marking(x, z, length, width = .15) {
+        const a = x - width / 2, b = x + width / 2, front = z + length / 2, back = z - length / 2;
+        markingVertices.push(a, -.015, back, a, -.015, front, b, -.015, back,
+            b, -.015, back, a, -.015, front, b, -.015, front);
     }
-    for (const x of [-5.2, 5.2]) marking(x, -22, 110);
-    for (const x of [-1.8, 1.8]) {
+    for (const x of [-9, 9]) marking(x, -22, 110);
+    for (const x of [-5.4, -1.8, 1.8, 5.4]) {
         for (let z = -74; z < 32; z += 6) marking(x, z, 3);
     }
+    const markings = new THREE.BufferGeometry();
+    markings.setAttribute('position', new THREE.Float32BufferAttribute(markingVertices, 3));
+    markings.computeVertexNormals();
+    scene.add(new THREE.Mesh(markings, laneMaterial));
 
     const paint = new THREE.MeshPhysicalMaterial({ color: 0xed263c, metalness: .35, roughness: .27, clearcoat: 1, clearcoatRoughness: .18, envMapIntensity: .7 });
     const paintTarget = paint.color.clone();
@@ -596,33 +598,18 @@ async function initShowroom() {
     function syncSceneTheme() {
         renderer.shadowMap.needsUpdate = true;
         const dark = document.documentElement.dataset.mode === 'dark';
-        const environments = {
-            desert: { fog: dark ? 0x283640 : 0xb4c0b9, light: 0xffe9e0, rim: 0xa8c9ff, fill: 0xffc2b5 },
-            city: { fog: dark ? 0x1b293c : 0xa6bac7, light: 0xe3edff, rim: 0x81afff, fill: 0xe2deef },
-            coast: { fog: dark ? 0x253d4d : 0xb8d6d7, light: 0xffeed2, rim: 0x90deef, fill: 0xffd8ad }
-        };
-        const environment = environments[currentEnvironment];
-        scene.fog.density = currentEnvironment === 'desert' ? .022 : .013;
-        landscape.setMode(currentEnvironment);
+        const environment = { fog: dark ? 0x283640 : 0xb4c0b9, light: 0xffe9e0, rim: 0xa8c9ff, fill: 0xffc2b5 };
+        scene.fog.density = .022;
         landscape.setTheme(dark);
         scene.fog.color.set(environment.fog);
         key.color.set(environment.light);
         rim.color.set(environment.rim);
         fill.color.set(environment.fill);
         roadMaterial.color.set(dark ? 0x747e89 : 0xc1c8ce);
-        laneMaterial.color.set(dark ? 0xc5ced1 : 0xe9e5d8);
+        laneMaterial.color.set(dark ? 0xe0e5e6 : 0xf3f1e7);
         shadow.material.opacity = dark ? .35 : .2;
         wake();
     }
-    environmentButtons.forEach(button => button.addEventListener('click', () => {
-        if (currentEnvironment === button.dataset.environment) return;
-        transitionEnvironment(hero, renderer, scene, camera, () => {
-            currentEnvironment = button.dataset.environment;
-            hero.dataset.environment = currentEnvironment;
-            environmentButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-            syncSceneTheme();
-        }, reducedMotion.matches);
-    }));
     new MutationObserver(syncSceneTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-mode'] });
     syncSceneTheme();
     refreshPaintPalette();

@@ -818,36 +818,9 @@ html:not([data-mode="dark"]) .custom-paint { color: #252834; }
     .showroom-controls { gap: 8px; padding: 10px; }
 }
 
-.environment-picker {
-    position: absolute; left: 3%; top: 43%; z-index: 6;
-    display: grid; gap: 5px; padding: 6px; width: 58px;
-    border-radius: 18px; border: 1px solid #ffffff55;
-    background: #eff4f6a6; color: #273846;
-    backdrop-filter: blur(24px) saturate(140%);
-    -webkit-backdrop-filter: blur(24px) saturate(140%);
-    box-shadow: inset 0 1px #ffffff50, 0 10px 30px #14283815;
-}
-.environment-picker button { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 6px; border: 0; border-radius: 12px; color: inherit; background: transparent; cursor: pointer; font-size: var(--type-ui); white-space: nowrap; transition: background .2s, color .2s; }
-.environment-picker .bi { display: inline-flex; line-height: 1; font-size: 17px; }
-.environment-picker .bi::before { display: block; }
-.environment-picker button { min-height: 42px; }
-.environment-frame { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; pointer-events: none; }
-.environment-sky-frame { z-index: -2; pointer-events: none; }
-.environment-picker button:hover { background: #ffffff50; }
-.environment-picker button[aria-pressed="true"] { background: #253d4c; color: #fff; }
-html[data-mode="dark"] .environment-picker { background: #172737c9; color: #dce5eb; border-color: #ffffff26; }
-html[data-mode="dark"] .environment-picker button[aria-pressed="true"] { background: #d9e7ec; color: #1e3040; }
-.showroom[data-environment="city"] .showroom-sky { background: radial-gradient(ellipse at 50% 46%, #cad7dc, #829bad 50%, #304d6d 100%); }
-.showroom[data-environment="coast"] .showroom-sky { background: radial-gradient(ellipse at 50% 48%, #f3dfb9, #9acbd9 44%, #39789d 100%); }
-.showroom[data-environment="city"] .showroom-sky::after { background: linear-gradient(transparent, #a6bac7 48%, var(--showroom-floor)); }
-.showroom[data-environment="coast"] .showroom-sky::after { background: linear-gradient(transparent, #b8d6d7 48%, var(--showroom-floor)); }
-
 @media (max-width: 575px) {
     .showroom { grid-template-rows: auto auto auto minmax(80px, 1fr) auto auto; }
     .showroom-subtitle { display: none; }
-    .environment-picker { grid-row: 2; position: relative; inset: auto; width: 100%; grid-template-columns: repeat(3, 1fr); padding: 3px; gap: 3px; border-radius: 24px; }
-    .environment-picker button { padding: 6px; min-height: 30px; border-radius: 20px; font-size: var(--type-small); }
-    .environment-picker .bi { font-size: 14px; }
     .showroom-mobile-space { min-height: 80px; }
 }
 
@@ -888,11 +861,9 @@ html[data-mode="dark"] .environment-picker button[aria-pressed="true"] { backgro
     .showroom-car-picker { grid-area: 1 / 1 / 2 / -1; }
     .showroom .showroom-title { grid-area: 2 / 1 / 3 / -1; margin-top: 8px; }
     .showroom-mobile-space { grid-area: 3 / 1 / 4 / -1; }
-    .environment-picker { grid-area: 4 / 1 / 5 / 2; width: 100%; height: 38px; align-self: center; }
-    .environment-picker button { height: 30px; padding-block: 4px; }
     .showroom .showroom-hint {
-        grid-area: 4 / 2 / 5 / 3; align-self: center;
-        width: 100%; height: 38px; padding: 0 6px; white-space: nowrap;
+        grid-area: 4 / 1 / 5 / -1; align-self: center; justify-self: center;
+        width: fit-content; max-width: 100%; height: 38px; padding: 0 12px; white-space: nowrap;
         display: flex; align-items: center;
         font-size: clamp(.68rem, 2.9vw, .76rem);
     }

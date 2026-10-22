@@ -29,7 +29,7 @@ export function createDriveStory(THREE, RoomEnvironment, heroView) {
         else section.prepend(heading);
     }
     positionHeading();
-    const heroUi = heroView ? [...heroView.hero.querySelectorAll('.showroom-controls, .showroom-hint, .showroom-car-picker, .environment-picker, .showroom-title, .showroom-subtitle')] : [];
+    const heroUi = heroView ? [...heroView.hero.querySelectorAll('.showroom-controls, .showroom-hint, .showroom-car-picker, .showroom-title, .showroom-subtitle')] : [];
     // A layout anchor lets the same detail canvas travel outside its section,
     // then settle back into the sticky frame without changing its projection.
     const anchor = document.createElement('span');

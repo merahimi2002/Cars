@@ -1,0 +1,207 @@
+{
+  "date": "2026-10-20",
+  "mobileModule": {
+    "complete": true,
+    "mode": "water",
+    "viewport": [
+      390,
+      844
+    ],
+    "results": [
+      {
+        "name": "water-idle",
+        "renders": 32,
+        "hero": 32,
+        "story": 0,
+        "shadowUpdates": 0,
+        "resizeCalls": 0,
+        "layoutReads": 0,
+        "renderCpuMs": 115.6,
+        "drawCalls": 2016,
+        "triangles": 2233888,
+        "waterFirstOffset": [
+          0.011098200000000016,
+          0.004624250000000007
+        ],
+        "waterLastOffset": [
+          0.02899680000000001,
+          0.012082000000000004
+        ],
+        "elapsedMs": 3005.9,
+        "frameP50Ms": 16.7,
+        "frameP95Ms": 16.8,
+        "fps": 60,
+        "framesOver25Ms": 0
+      },
+      {
+        "name": "water-camera",
+        "renders": 67,
+        "hero": 67,
+        "story": 0,
+        "shadowUpdates": 0,
+        "resizeCalls": 0,
+        "layoutReads": 0,
+        "renderCpuMs": 157.9,
+        "drawCalls": 5253,
+        "triangles": 4877043,
+        "waterFirstOffset": [
+          0.029096400000000012,
+          0.012123500000000006
+        ],
+        "waterLastOffset": [
+          0.03799680000000007,
+          0.01583200000000003
+        ],
+        "elapsedMs": 1511,
+        "frameP50Ms": 16.7,
+        "frameP95Ms": 16.8,
+        "fps": 60,
+        "framesOver25Ms": 0
+      },
+      {
+        "name": "water-offscreen",
+        "renders": 0,
+        "hero": 0,
+        "story": 0,
+        "shadowUpdates": 0,
+        "resizeCalls": 0,
+        "layoutReads": 0,
+        "renderCpuMs": 0,
+        "drawCalls": 0,
+        "triangles": 0,
+        "elapsedMs": 2500.3,
+        "frameP50Ms": 16.7,
+        "frameP95Ms": 16.8,
+        "fps": 60,
+        "framesOver25Ms": 0
+      },
+      {
+        "name": "water-resumed",
+        "renders": 17,
+        "hero": 17,
+        "story": 0,
+        "shadowUpdates": 0,
+        "resizeCalls": 0,
+        "layoutReads": 0,
+        "renderCpuMs": 20.8,
+        "drawCalls": 1666,
+        "triangles": 1319863,
+        "waterFirstOffset": [
+          0.04699560000000005,
+          0.01958150000000002
+        ],
+        "waterLastOffset": [
+          0.055296600000000036,
+          0.023040250000000016
+        ],
+        "elapsedMs": 1502,
+        "frameP50Ms": 16.7,
+        "frameP95Ms": 16.8,
+        "fps": 60,
+        "framesOver25Ms": 0
+      }
+    ]
+  },
+  "desktopStandalone": {
+    "complete": true,
+    "mode": "water",
+    "viewport": [
+      1280,
+      900
+    ],
+    "results": [
+      {
+        "name": "water-idle",
+        "renders": 44,
+        "hero": 44,
+        "story": 0,
+        "shadowUpdates": 0,
+        "resizeCalls": 0,
+        "layoutReads": 0,
+        "renderCpuMs": 135.4,
+        "drawCalls": 2904,
+        "triangles": 3071860,
+        "waterFirstOffset": [
+          0.010900799999999997,
+          0.004541999999999999
+        ],
+        "waterLastOffset": [
+          0.028801200000000002,
+          0.0120005
+        ],
+        "elapsedMs": 3001.3,
+        "frameP50Ms": 16.7,
+        "frameP95Ms": 16.8,
+        "fps": 60,
+        "framesOver25Ms": 0
+      },
+      {
+        "name": "water-camera",
+        "renders": 51,
+        "hero": 51,
+        "story": 0,
+        "shadowUpdates": 0,
+        "resizeCalls": 0,
+        "layoutReads": 0,
+        "renderCpuMs": 136.1,
+        "drawCalls": 4351,
+        "triangles": 3822851,
+        "waterFirstOffset": [
+          0.028900800000000004,
+          0.012042000000000002
+        ],
+        "waterLastOffset": [
+          0.037602000000000024,
+          0.01566750000000001
+        ],
+        "elapsedMs": 1509.3,
+        "frameP50Ms": 16.7,
+        "frameP95Ms": 33.4,
+        "fps": 47.9,
+        "framesOver25Ms": 16
+      },
+      {
+        "name": "water-offscreen",
+        "renders": 0,
+        "hero": 0,
+        "story": 0,
+        "shadowUpdates": 0,
+        "resizeCalls": 0,
+        "layoutReads": 0,
+        "renderCpuMs": 0,
+        "drawCalls": 0,
+        "triangles": 0,
+        "elapsedMs": 2500.9,
+        "frameP50Ms": 16.7,
+        "frameP95Ms": 16.8,
+        "fps": 60,
+        "framesOver25Ms": 0
+      },
+      {
+        "name": "water-resumed",
+        "renders": 21,
+        "hero": 21,
+        "story": 0,
+        "shadowUpdates": 0,
+        "resizeCalls": 0,
+        "layoutReads": 0,
+        "renderCpuMs": 74.4,
+        "drawCalls": 1974,
+        "triangles": 1630251,
+        "waterFirstOffset": [
+          0.04570380000000002,
+          0.019043250000000008
+        ],
+        "waterLastOffset": [
+          0.054304200000000025,
+          0.02262675000000001
+        ],
+        "elapsedMs": 1500.1,
+        "frameP50Ms": 16.7,
+        "frameP95Ms": 16.8,
+        "fps": 60.7,
+        "framesOver25Ms": 0
+      }
+    ]
+  }
+}

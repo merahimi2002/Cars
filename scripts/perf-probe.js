@@ -71,11 +71,6 @@ async function smoke() {
         document.querySelector('#showroom-rotate').click(); await sleep(600);
         assert(document.querySelector('#showroom-rotate').getAttribute('aria-pressed') === 'true', 'Auto rotate');
         document.querySelector('#showroom-rotate').click();
-        for (const environment of ['city', 'coast', 'desert']) {
-            document.querySelector('button[data-environment="' + environment + '"]').click();
-            await sleep(1100);
-            assert(document.querySelector('#showroom').dataset.environment === environment, 'Environment ' + environment);
-        }
         const color = document.querySelector('#showroom-custom-paint');
         color.value = '#5a4477'; color.dispatchEvent(new Event('input', { bubbles: true })); await sleep(1500);
         assert(document.querySelector('#paint-name').textContent === 'رنگ دلخواه', 'Custom paint');
@@ -86,7 +81,7 @@ async function smoke() {
         await sweep(footerY, 0, 1400); await sleep(1800);
         assert(!document.querySelector('#showroom').classList.contains('is-handoff'), 'Reverse handoff');
         assert(document.documentElement.scrollWidth <= innerWidth, 'Horizontal overflow');
-        checks.push({ model: id, passed: ['palette', 'custom paint', 'front camera', 'auto rotate', 'three environments', 'story/footer sync', 'forward/reverse scroll', 'no overflow'] });
+        checks.push({ model: id, passed: ['palette', 'custom paint', 'front camera', 'auto rotate', 'story/footer sync', 'forward/reverse scroll', 'no overflow'] });
     }
     output.textContent = JSON.stringify({ complete: true, mode: 'smoke', viewport: [innerWidth, innerHeight], checks }, null, 2);
 }
@@ -98,7 +93,6 @@ try {
         const model = query.get('model') || 'nissan';
         document.querySelector('button[data-car="' + model + '"]').click();
         await waitFor(() => document.querySelector('#showroom').dataset.car === model && !document.querySelector('button[data-car="' + model + '"]').disabled);
-        document.querySelector('button[data-environment="' + (query.get('environment') || 'city') + '"]').click();
         await sleep(1600);
         output.hidden = true;
         output.textContent = JSON.stringify({ complete: true, mode: 'visual', model, viewport: [innerWidth, innerHeight] });
@@ -111,12 +105,9 @@ try {
     await waitFor(() => document.querySelector('#showroom').dataset.car === 'nissan' && !document.querySelector('button[data-car="nissan"]').disabled);
     await sleep(2000);
     if (fpsTest) {
-        for (const environment of ['desert', 'city', 'coast']) {
-            document.querySelector('button[data-environment="' + environment + '"]').click(); await sleep(1500);
-            document.querySelector('#showroom-rotate').click();
-            await phase('orbit-' + environment, () => sleep(4000));
-            document.querySelector('#showroom-rotate').click(); await sleep(300);
-        }
+        document.querySelector('#showroom-rotate').click();
+        await phase('orbit-road', () => sleep(4000));
+        document.querySelector('#showroom-rotate').click(); await sleep(300);
     }
     await phase('paint-settle', async () => { document.querySelectorAll('.paint-button')[1].click(); await sleep(3500); });
     await phase('hero-idle', () => sleep(2000));
