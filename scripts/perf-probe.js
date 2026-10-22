@@ -104,6 +104,13 @@ try {
     document.querySelector('button[data-car="nissan"]').click();
     await waitFor(() => document.querySelector('#showroom').dataset.car === 'nissan' && !document.querySelector('button[data-car="nissan"]').disabled);
     await sleep(2000);
+    if (new URLSearchParams(location.search).get('perf') === 'side-roads') {
+        document.querySelector('#showroom-rotate').click();
+        for (let repeat = 1; repeat <= 3; repeat++) await phase('orbit-' + repeat, () => sleep(4000));
+        document.querySelector('#showroom-rotate').click();
+        output.textContent = JSON.stringify({ complete: true, mode: 'side-roads', viewport: [innerWidth, innerHeight], dpr: devicePixelRatio, model: 'nissan', results }, null, 2);
+        return;
+    }
     if (fpsTest) {
         document.querySelector('#showroom-rotate').click();
         await phase('orbit-road', () => sleep(4000));

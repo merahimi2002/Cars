@@ -1,0 +1,270 @@
+{
+  "date": "2026-10-22",
+  "method": "Three consecutive four-second orbit windows per case; Nissan, DPR 1, visible in-app browser. Mobile viewport emulation, not physical phone.",
+  "baselineSourceSha256": "f58c4083f30d1b0d9ad17ed8e9d239d69c3c994570de35624dc53fb0face93d1",
+  "currentSourceSha256": "0ded4c9bf5b49898dd8f43aedca4f9603314581898909641e6802ea7b637d43f",
+  "probeSha256": "b13f888be0ce5eff74233520b0bf2b346b8add5563a9155cfec7a3ec1c42799f",
+  "runs": {
+    "desktop": {
+      "before": {
+        "complete": true,
+        "mode": "side-roads",
+        "viewport": [
+          1280,
+          900
+        ],
+        "dpr": 1,
+        "model": "nissan",
+        "results": [
+          {
+            "name": "orbit-1",
+            "renders": 89,
+            "hero": 89,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 134.1,
+            "drawCalls": 4183,
+            "triangles": 4469135,
+            "elapsedMs": 4012.3,
+            "frameP50Ms": 33.4,
+            "frameP95Ms": 99.9,
+            "fps": 22.1,
+            "framesOver25Ms": 68
+          },
+          {
+            "name": "orbit-2",
+            "renders": 129,
+            "hero": 129,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 157.7,
+            "drawCalls": 6063,
+            "triangles": 6477735,
+            "elapsedMs": 4003.1,
+            "frameP50Ms": 33.3,
+            "frameP95Ms": 66.6,
+            "fps": 32.4,
+            "framesOver25Ms": 81
+          },
+          {
+            "name": "orbit-3",
+            "renders": 61,
+            "hero": 61,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 145.8,
+            "drawCalls": 2867,
+            "triangles": 3063115,
+            "elapsedMs": 4000.3,
+            "frameP50Ms": 66.6,
+            "frameP95Ms": 133.4,
+            "fps": 15,
+            "framesOver25Ms": 53
+          }
+        ]
+      },
+      "after": {
+        "complete": true,
+        "mode": "side-roads",
+        "viewport": [
+          1280,
+          900
+        ],
+        "dpr": 1,
+        "model": "nissan",
+        "results": [
+          {
+            "name": "orbit-1",
+            "renders": 93,
+            "hero": 93,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 209.3,
+            "drawCalls": 4557,
+            "triangles": 4697523,
+            "elapsedMs": 4014.9,
+            "frameP50Ms": 33.4,
+            "frameP95Ms": 100.1,
+            "fps": 23.2,
+            "framesOver25Ms": 71
+          },
+          {
+            "name": "orbit-2",
+            "renders": 131,
+            "hero": 131,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 279.8,
+            "drawCalls": 6419,
+            "triangles": 6616941,
+            "elapsedMs": 4001.5,
+            "frameP50Ms": 33.3,
+            "frameP95Ms": 50.1,
+            "fps": 32.6,
+            "framesOver25Ms": 82
+          },
+          {
+            "name": "orbit-3",
+            "renders": 137,
+            "hero": 137,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 259.2,
+            "drawCalls": 6713,
+            "triangles": 6920007,
+            "elapsedMs": 4011.4,
+            "frameP50Ms": 33.2,
+            "frameP95Ms": 50,
+            "fps": 34.4,
+            "framesOver25Ms": 80
+          }
+        ]
+      }
+    },
+    "mobile": {
+      "before": {
+        "complete": true,
+        "mode": "side-roads",
+        "viewport": [
+          390,
+          844
+        ],
+        "dpr": 1,
+        "model": "nissan",
+        "results": [
+          {
+            "name": "orbit-1",
+            "renders": 241,
+            "hero": 241,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 463.5,
+            "drawCalls": 11327,
+            "triangles": 12101815,
+            "elapsedMs": 4007.7,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8,
+            "fps": 60,
+            "framesOver25Ms": 0
+          },
+          {
+            "name": "orbit-2",
+            "renders": 240,
+            "hero": 240,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 396.2,
+            "drawCalls": 11280,
+            "triangles": 12051600,
+            "elapsedMs": 4000,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8,
+            "fps": 60,
+            "framesOver25Ms": 0
+          },
+          {
+            "name": "orbit-3",
+            "renders": 240,
+            "hero": 240,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 374.5,
+            "drawCalls": 11280,
+            "triangles": 12051600,
+            "elapsedMs": 4000.2,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8,
+            "fps": 60,
+            "framesOver25Ms": 0
+          }
+        ]
+      },
+      "after": {
+        "complete": true,
+        "mode": "side-roads",
+        "viewport": [
+          390,
+          844
+        ],
+        "dpr": 1,
+        "model": "nissan",
+        "results": [
+          {
+            "name": "orbit-1",
+            "renders": 240,
+            "hero": 240,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 370.1,
+            "drawCalls": 11760,
+            "triangles": 12122640,
+            "elapsedMs": 4007.5,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8,
+            "fps": 60,
+            "framesOver25Ms": 0
+          },
+          {
+            "name": "orbit-2",
+            "renders": 241,
+            "hero": 241,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 419.8,
+            "drawCalls": 11809,
+            "triangles": 12173151,
+            "elapsedMs": 4003.8,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8,
+            "fps": 60,
+            "framesOver25Ms": 0
+          },
+          {
+            "name": "orbit-3",
+            "renders": 240,
+            "hero": 240,
+            "story": 0,
+            "shadowUpdates": 0,
+            "resizeCalls": 0,
+            "layoutReads": 0,
+            "renderCpuMs": 374.9,
+            "drawCalls": 11760,
+            "triangles": 12122640,
+            "elapsedMs": 4000.3,
+            "frameP50Ms": 16.7,
+            "frameP95Ms": 16.8,
+            "fps": 60,
+            "framesOver25Ms": 0
+          }
+        ]
+      }
+    }
+  },
+  "initialDesktopOrbit": {
+    "beforeFPS": 35.1,
+    "afterFPS": 33.1,
+    "note": "Initial long run later throttled in footer; these orbit values alone are not evidence of a stable regression."
+  }
+}

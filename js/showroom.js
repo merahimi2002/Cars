@@ -161,13 +161,18 @@ async function initShowroom() {
     shoulderContext.fillRect(0, 0, 512, 128);
     const shoulders = new THREE.CanvasTexture(shoulderCanvas);
     const roadMaterial = new THREE.MeshStandardMaterial({ map: asphalt, alphaMap: shoulders, transparent: true, depthWrite: false, bumpMap: asphalt, bumpScale: .018, roughness: .96, metalness: 0, color: 0xc1c8ce });
-    const road = new THREE.Mesh(new THREE.PlaneGeometry(24, 110), roadMaterial);
-    road.rotation.x = -Math.PI / 2;
-    road.position.set(0, -.04, -22);
+    const roadCenters = [-18, 0, 18];
+    const roadGeometry = new THREE.PlaneGeometry(24, 110);
     ground.renderOrder = -3;
-    road.renderOrder = -2;
     shadow.renderOrder = -1;
-    scene.add(road);
+    // Adjacent stretches reuse the exact asphalt, scale and five-lane layout.
+    for (const center of roadCenters) {
+        const road = new THREE.Mesh(roadGeometry, roadMaterial);
+        road.rotation.x = -Math.PI / 2;
+        road.position.set(center, -.04, -22);
+        road.renderOrder = -2;
+        scene.add(road);
+    }
     const laneMaterial = new THREE.MeshStandardMaterial({ color: 0xf3f1e7, roughness: .95, transparent: true, opacity: .94 });
     const markingVertices = [];
     function marking(x, z, length, width = .15) {
@@ -175,10 +180,14 @@ async function initShowroom() {
         markingVertices.push(a, -.015, back, a, -.015, front, b, -.015, back,
             b, -.015, back, a, -.015, front, b, -.015, front);
     }
-    for (const x of [-9, 9]) marking(x, -22, 110);
-    for (const x of [-5.4, -1.8, 1.8, 5.4]) {
-        for (let z = -74; z < 32; z += 6) marking(x, z, 3);
+    const edges = new Set();
+    for (const center of roadCenters) {
+        edges.add(center - 9); edges.add(center + 9);
+        for (const offset of [-5.4, -1.8, 1.8, 5.4]) {
+            for (let z = -74; z < 32; z += 6) marking(center + offset, z, 3);
+        }
     }
+    for (const x of edges) marking(x, -22, 110);
     const markings = new THREE.BufferGeometry();
     markings.setAttribute('position', new THREE.Float32BufferAttribute(markingVertices, 3));
     markings.computeVertexNormals();
